@@ -7,8 +7,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # Create groups if not created
-        admin_group, _ = Group.objects.get_or_create(name = "Admin")
-        teacher_group, _ = Group.objects.get_or_create(name = "Teacher")
+        admin_group, _ = Group.objects.get_or_create(name = "admin")
+        teacher_group, _ = Group.objects.get_or_create(name = "teacher")
+        student_group, _ = Group.objects.get_or_create(name = 'student')
 
         # get courses.Section permissions
         self_assign_to_section = Permission.objects.get(codename = 'assign_self_to_section')
