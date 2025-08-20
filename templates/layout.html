@@ -6,121 +6,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Enrollment System{% endblock %}</title>
-    
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    
-    <!-- Favicon -->
     <link rel="icon" href="{% static 'images/favicon.ico' %}">
-    <style>
-        .quick-nav .card {
-            transition: all 0.3s ease;
-            border-radius: 15px;
-            border: none;
-        }
-        .quick-nav .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .quick-nav .card-body {
-            padding: 1.5rem;
-            text-align: center;
-        }
-        .quick-nav i {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: #0d6efd;
-        }
-    </style>
 </head>
-<body d-flex flex-column min-vh-100>
+<body class="d-flex flex-column min-vh-100">
+
     <!-- Navigation -->
-   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-                <i class="fas fa-user-graduate me-2"></i>EnrollSys
-                {% if user.is_authenticated and user|has_group:"Student" %}
-                    <span class="badge rounded-pill text-white ms-2 py-1 px-2" style="font-size: 0.7rem; background: #007bff; box-shadow: 0 1px 3px rgba(0,0,0,0.3);">
-                        <i class="fas fa-user-graduate me-1"></i> Student
-                    </span>
-                {% elif user.is_authenticated and user|has_group:"Teacher" %}
-                    <span class="badge rounded-pill text-white ms-2 py-1 px-2" style="font-size: 0.7rem; background: #28a745; box-shadow: 0 1px 3px rgba(0,0,0,0.3);">
-                        <i class="fas fa-chalkboard-teacher me-1"></i> Teacher
-                    </span>
-                {% elif user.is_authenticated and user.is_superuser %}
-                    <span class="badge rounded-pill text-white ms-2 py-1 px-2" style="font-size: 0.7rem; background: #dc3545; box-shadow: 0 1px 5px rgba(220,53,69,0.5);">
-                        <i class="fas fa-user-shield me-1"></i> Admin
-                    </span>
-                {% else %}
-                    <span class="badge rounded-pill text-white ms-2 py-1 px-2" style="font-size: 0.7rem; background: #6c757d; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
-                        <i class="fas fa-user me-1"></i> Guest
-                    </span>
-                {% endif %}
-            </a>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, #0d6efd, #3a8dde);">
+      <div class="container">
 
+        <!-- Brand + Badge -->
+        <a class="navbar-brand d-flex align-items-center me-3 fs-4" href="{% url 'home' %}">
+          <i class="fas fa-user-graduate me-2"></i>EnrollSys
+          {% if user.is_authenticated %}
+            {% if user|has_group:"Student" %}
+            <span class="badge rounded-pill bg-info text-dark ms-2 small">
+              <i class="fas fa-user-graduate me-1"></i>Student
+            </span>
+            {% elif user|has_group:"Teacher" %}
+            <span class="badge rounded-pill bg-success ms-2 small">
+              <i class="fas fa-chalkboard-teacher me-1"></i>Teacher
+            </span>
+            {% elif user|has_group:"Registrar" %}
+            <span class="badge rounded-pill bg-warning text-dark ms-2 small">
+              <i class="fas fa-user-shield me-1"></i>Registrar
+            </span>
+            {% elif user|has_group:"Admin" %}
+            <span class="badge rounded-pill bg-danger ms-2 small">
+              <i class="fas fa-user-shield me-1"></i>Admin
+            </span>
+            {% endif %}
+          {% endif %}
+        </a>
 
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">
-                            <i class="fas fa-book me-1"></i> Courses
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">
-                            <i class="fas fa-clipboard-list me-1"></i> Enrollment
-                        </a>
-                    </li>
-                </ul>
-                
-                <div class="d-flex align-items-center">
-                    {% if user.is_authenticated %}
-                    <div class="me-3">
-                        <span class="badge bg-light text-dark p-2">
-                            <i class="fas fa-user-circle me-1"></i>
-                            {{ user.username }}
-                        </span>
-                    </div>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'home' %}">
-                                <i class="fas fa-user me-1"></i> Profile
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'users:logout' %}">
-                                <i class="fas fa-sign-out-alt me-1"></i> Logout
-                            </a>
-                        </li>
-                    </ul>
-                    {% else %}
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'users:login' %}">
-                                <i class="fas fa-sign-in-alt me-1"></i> Login
-                            </a>
-                        </li>
-                    </ul>
-                    {% endif %}
-                </div>
-            </div>
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <div class="d-flex flex-row w-100 justify-content-between align-items-center flex-wrap">
+
+            <!-- Left links -->
+            <ul class="navbar-nav mb-2 mb-lg-0 d-flex flex-row flex-wrap fs-5">
+              <li class="nav-item">
+                <a class="nav-link text-white" href="{% url 'home' %}">
+                  <i class="fas fa-book me-1"></i>Courses
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="{% url 'home' %}">
+                  <i class="fas fa-clipboard-list me-1"></i>Enrollment
+                </a>
+              </li>
+            </ul>
+
+            <!-- Right user controls -->
+            <ul class="navbar-nav mb-2 mb-lg-0 d-flex flex-row flex-wrap align-items-center gap-2 fs-5">
+              {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <span class="badge bg-light text-dark p-2 small">
+                    <i class="fas fa-user-circle me-1"></i>{{ user.username }}
+                  </span>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-white" href="{% url 'home' %}">
+                    <i class="fas fa-user me-1"></i>Profile
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-white" href="{% url 'users:logout' %}">
+                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                  </a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link text-white" href="{% url 'users:login' %}">
+                    <i class="fas fa-sign-in-alt me-1"></i>Login
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+
+          </div>
         </div>
+
+      </div>
     </nav>
 
-    {% block more_navigation %}
-    {% endblock%}
+    {% block more_navigation %}{% endblock %}
 
     <!-- Main Content -->
-    <main class="container my-5">
+    <main class="container my-5 fs-5 flex-grow-1">
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
@@ -130,17 +114,18 @@
             {% endfor %}
         {% endif %}
         
-        {% block content %}
-        <!-- Content will be injected here by child templates -->
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
-    
+
     <!-- Footer -->
-   <footer class="bg-light py-4 mt-auto">
+    <footer class="bg-light py-4 mt-auto">
         <div class="container text-center">
-            <p class="mb-0 text-primary-dark" style="color: #0a2463;">&copy; {% now "Y" %} Enrollment System. All rights reserved.</p>
+            <p class="mb-0 fs-6 fw-semibold" style="background: linear-gradient(90deg, #0d6efd, #3a8dde); -webkit-background-clip: text; color: transparent;">
+                &copy; {% now "Y" %} Enrollment System. All rights reserved.
+            </p>
         </div>
     </footer>
+
 
     <!-- Bootstrap 5 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

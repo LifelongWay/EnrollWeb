@@ -17,7 +17,6 @@ class Course(models.Model):
     course_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length = 20, blank = False)
     credits = models.IntegerField()
-
     # relationship "prerequisite"
     prerequisite_courses = models.ManyToManyField(
         'self',
@@ -29,6 +28,7 @@ class Course(models.Model):
 class Section(models.Model):
     # relationship "teaches"
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='classes', null = False, blank = False)
+    image = models.ImageField(upload_to='course_images/', blank = True, null = True)
 
     SEMESTER_CHOICES = [
         ('spring', 'Spring'),

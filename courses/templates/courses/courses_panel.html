@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% load groupfilters %}
+
+{% block more_navigation %}
+<div class="container my-5">
+    <h2 class="mb-4 fs-2 text-primary text-center fw-bold">Courses & Sections</h2>
+
+    <div class="row g-4">
+        {% for course in courses %}
+            {% for section in course.sections.all %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-lg rounded-4 course-card"
+                     {% if section.image %}
+                     style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                                    url('{{ section.image.url }}') no-repeat center center; 
+                            background-size: cover; color: white;"
+                     {% else %}
+                     style="background: linear-gradient(135deg, #607d8b, #455a64); color: #f1f1f1;" 
+                     {% endif %}>
+                    <div class="card-body">
+                        <!-- Course Name -->
+                        <h5 class="card-title fw-bold {% if section.image %}text-white{% else %}text-light{% endif %}">
+                            {{ course.name }}
+                        </h5>
+                        
+                        <!-- Section Badge -->
+                        <p class="card-text mb-3">
+                            {% if section.image %}
+                            <span class="badge rounded-pill bg-warning text-dark fw-bold">
+                                Section {{ section.section_number }}
+                            </span>
+                            {% else %}
+                            <span class="badge rounded-pill bg-info text-dark fw-bold">
+                                Section {{ section.section_number }}
+                            </span>
+                            {% endif %}
+                        </p>
+                        
+                        <!-- Teacher Info -->
+                        {% if section.teacher %}
+                        <p class="mb-0 {% if section.image %}text-white{% else %}text-light{% endif %}">
+                            <i class="fas fa-chalkboard-teacher me-2"></i>{{ section.teacher }}
+                        </p>
+                        {% endif %} 
+                    </div>
+
+                    {% if user|has_group:"Registrar" or user|has_group:"Admin" %}
+                    <div class="card-footer {% if section.image %}bg-dark{% else %}bg-secondary{% endif %} d-flex justify-content-between">
+                        <a href="{% url 'home' %}" class="btn btn-sm {% if section.image %}btn-outline-light{% else %}btn-outline-light{% endif %}">
+                            <i class="fas fa-edit me-1"></i>Edit
+                        </a>
+                        <a href="{% url 'home' %}" class="btn btn-sm {% if section.image %}btn-outline-danger{% else %}btn-outline-light{% endif %}">
+                            <i class="fas fa-trash me-1"></i>Delete
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% empty %}
+            <div class="col-12">
+                <p class="text-muted text-center fs-5 mt-4">No courses or sections available.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.course-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.course-card .badge {
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.course-card .card-footer {
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+</style>
+
+{% endblock %}

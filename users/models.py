@@ -6,13 +6,16 @@ class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name = 'teachers')
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name= 'teachers')
 
-
+    def __str__(self):
+        return f'{self.user.username.split('.')[0].capitalize()} {self.user.username.split('.')[1].capitalize()}'
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs) # save teacher
 
         # get teacher group
-        teacher_group = Group.objects.get_or_create(name = 'teacher') 
+        teacher_group, _ = Group.objects.get_or_create(name = 'Teacher') 
 
+        # set corresp group
+        self.user.groups.add(teacher_group)
     """ note:
         if department is deleted, teacher gets deleted, but user that
         corresponds to this teacher role is not deleted.
@@ -25,7 +28,7 @@ class Student(models.Model):
     gpa = models.FloatField(null = False)
 
     # ISA rel
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name= 'student')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name= 'Student')
     # studies_in rel
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null = False, blank = False, related_name = 'advised_students')
     # advised_by rel
@@ -39,3 +42,12 @@ class Student(models.Model):
         self.user.groups.add(student_group) # add group to created student
 
 
+class Registrar(models.Model):
+    registrar_id = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User ,on_delete=models.CASCADE, related_name= 'Registrar')
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        # set registrar's group
+        registrar_group, _ = Group.objects.get_or_create(name = 'Registrar')
+        self.user.groups.add(registrar_group)
