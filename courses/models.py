@@ -24,6 +24,9 @@ class Course(models.Model):
         blank = True,
         related_name = 'prerequisites'
         )
+    
+    def __str__(self):
+        return f'{self.name}'
 
 class Section(models.Model):
     # relationship "teaches"
@@ -41,7 +44,7 @@ class Section(models.Model):
     # weak relationship "course_sec"
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name= 'sections')
     capacity = models.PositiveSmallIntegerField(default = 0)
-    year = models.IntegerField(blank = False, null = False)    
+    year = models.IntegerField(blank = False, null = False, default = timezone.now().year)    
     semester = models.CharField(choices=SEMESTER_CHOICES, blank = False, null = False)
     
     # relationship "enrolls"
@@ -50,6 +53,8 @@ class Section(models.Model):
     class Meta:
         unique_together = ('course', 'section_number', 'year', 'semester')
     
+    def __str__(self):
+        return f'{self.course.name}.{self.section_number}'
 class Enrollment(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, blank = False, null = False)
     section = models.ForeignKey(Section, on_delete=models.CASCADE, blank = False, null = False)

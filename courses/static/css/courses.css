@@ -1,0 +1,141 @@
+/* Add Course Button - Sleek & Modern */
+.add-course-btn {
+    padding: 0.5rem 1rem; /* smaller than btn-lg */
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 0.4rem;
+
+    background: #0d6efd; /* primary blue */
+    color: #fff;
+    border: none;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.add-course-btn i {
+    font-size: 1rem; /* icon slightly smaller */
+}
+
+.add-course-btn:hover {
+    background: #0b5ed7; /* darker blue */
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    color: #fff;
+    text-decoration: none;
+}
+
+
+
+/* Course Form */
+/* General form styling */
+.course_form {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 25px 30px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Form groups */
+.course_form .form-group {
+    margin-bottom: 20px;
+}
+
+/* Labels */
+.course_form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Inputs and selects */
+.course_form input,
+.course_form select {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 16px;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.course_form input:focus,
+.course_form select:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+/* Multi-select for prerequisites (if CheckboxSelectMultiple renders as multiple checkboxes) */
+/* Scrollable wrapper */
+.course_form .form-group.prerequisite_courses .checkboxes-wrapper {
+    max-height: 200px;      /* limit height */
+    overflow-y: auto;       /* scroll if too tall */
+    border: 1px solid #ccc; /* optional styling */
+    padding: 6px;
+    width: 100%;
+}
+
+/* Each checkbox row */
+.course_form .form-group.prerequisite_courses .checkboxes-wrapper label {
+    display: flex;           /* make checkbox + text a flex row */
+    flex-direction: row;     /* horizontal: checkbox left, text right */
+    align-items: center;     /* vertical alignment */
+    gap: 8px;                /* space between checkbox and text */
+    padding: 4px 0;          /* vertical spacing between rows */
+    cursor: pointer;         /* make whole row clickable */
+    width: 200px;
+    border: 2px solid red;
+}
+
+/* Checkbox itself */
+.course_form .form-group.prerequisite_courses .checkboxes-wrapper input[type="checkbox"] {
+    flex-shrink: 0;          /* prevent checkbox from shrinking */
+    width: 16px;
+    height: 16px;
+}
+
+/* Submit button */
+.course_form .submit-btn, .section_form .submit-btn{
+    display: inline-block;
+    width: 100%;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.course_form .submit-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.course_form .submit-btn:active {
+    transform: translateY(1px);
+}
+
+
+
+
+/* Section Form styles */
+
+.section_form {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+}
+
+.section_form 

@@ -41,6 +41,8 @@ class Student(models.Model):
         student_group, _ = Group.objects.get_or_create(name = 'Student')
         self.user.groups.add(student_group) # add group to created student
 
+    def __str__(self):
+        return f'{self.user.username.split('.')[0].capitalize()} {self.user.username.split('.')[1].capitalize()}'
 
 class Registrar(models.Model):
     registrar_id = models.AutoField(primary_key=True)
