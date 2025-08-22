@@ -2,8 +2,11 @@
 {% load static %}
 {% load groupfilters %}
 
+{% block extra_css %}
+    <link rel = 'stylesheet' href = "{% static 'courses/css/courses.css' %}"/>
+{% endblock %}
+
 {% block more_navigation %}
-<link rel = 'stylesheet' href = "{% static "css/courses.css" %}">
 <div class="container my-5">
     <div class="d-flex align-items-center mb-4">
         <h2 class="fs-2 text-primary fw-bold">Courses & Sections</h2>

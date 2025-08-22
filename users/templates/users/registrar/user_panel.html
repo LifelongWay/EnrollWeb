@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}
+    {% if students %}
+        Student panel
+    {% elif teachers %}
+        Teacher panel
+    {% endif %}
+{% endblock %}
+
+{% block extra_css %}
+    <link rel = 'stylesheet' href = "{% static 'users/css/styles.css' %}"/>
+{% endblock %}
+
+{% block content %}
+        <div class="panel-header">
+                {% if students %}
+                    <h1>Student Panel</h1>
+                {% elif teachers %}
+                    <h1>Teacher Panel</h1>
+                {% else %}
+                    <h1> Panel </h1>
+                {% endif %}
+        </div>
+
+        <div class="profile-container panel-container">
+            {% if students %}
+                {% for student in students %}
+                    <div class="profile-card">
+                        {% comment %} Profile Image {% endcomment %}
+                        <div class="profile-img-div">
+                            <img src="{{ student.profile_img.url }}">
+                        </div>
+                        {% comment %} Profile Info {% endcomment %}
+                        <div class="profile-info">
+                            <p class="user-name">{{ student }}</p>
+                            <p class="user-id">stud_id: {{ student.student_id }}</p>
+                            <p class="user-dept">{{ student.department }}</p>
+                        </div>
+                        <!-- Floating Edit Button with SVG -->
+                        <button class="edit-btn" title='dd'>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/>
+                            </svg>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% elif teachers %}
+                {% for teacher in teachers %}
+                    <div class="profile-card">
+                        {% comment %} Profile Image {% endcomment %}
+                        <div class="profile-img-div">
+                            <img src="{{ teacher.profile_img.url }}">
+                        </div>
+                        {% comment %} Profile Info {% endcomment %}
+                        <div class="profile-info">
+                            <p class="user-name">{{ teacher }}</p>
+                            <p class="user-id">user_id: {{ teacher.user.pk }}</p>
+                            <p class="user-dept">{{ teacher.department }}</p>
+                        </div>
+                        <!-- Floating Edit Button with SVG -->
+                        <button class="edit-btn" title='dd'>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/>
+                            </svg>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+{% endblock %}

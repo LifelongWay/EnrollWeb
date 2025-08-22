@@ -3,7 +3,7 @@ from .forms import EnrollSysRegistrationForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import Group
-
+from .models import Student, Teacher
 # Create your views here.
 def login_view(request):  # Renamed from 'login'
     if request.method == 'POST':
@@ -55,3 +55,13 @@ def register(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+
+# show management panel for given role [REGISTRAR-ONLY]
+def roles_view(request, role):
+    context = {}
+    if role == 'students':
+        context['students'] = Student.objects.all()
+    elif role == 'teachers':
+        context['teachers'] = Teacher.objects.all()
+    return render(request, 'users/registrar/user_panel.html', context)

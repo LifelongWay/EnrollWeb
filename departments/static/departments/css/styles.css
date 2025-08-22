@@ -1,0 +1,84 @@
+/* Container for all cards */
+.departments-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    padding: 20px;
+    background-color: #e6f0fa; /* Light blue background */
+    box-shadow: 1px 1px 10px grey;
+    border-radius: 20px;
+}
+
+
+/* Each department card */
+.department-card {
+    background-color: #1E3A5F; /* Dark blue card */
+    color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    padding: 25px 20px;
+    width: 280px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.department-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* Department name */
+.department-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Buttons container: horizontal layout */
+.department-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Common button styles */
+.department-buttons .btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+/* Hover effect */
+.department-buttons .btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Button colors - all blue shades */
+.btn-edit { background-color: #1976D2; }       /* Medium blue */
+.btn-edit:hover { background-color: #1565C0; }
+
+.btn-delete { background-color: #0D47A1; }     /* Darker blue */
+.btn-delete:hover { background-color: #0B3C91; }
+
+.btn-courses { background-color: #64B5F6; }    /* Light blue */
+.btn-courses:hover { background-color: #42A5F5; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .department-card { width: 45%; }
+}
+
+@media (max-width: 480px) {
+    .department-card { width: 100%; }
+}

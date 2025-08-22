@@ -3,6 +3,8 @@ from django.contrib.auth.models import User, Group
 from departments.models import Department
 # Create your models here.
 class Teacher(models.Model):
+    profile_img = models.ImageField(upload_to='users/profile_imgs/', default = 'users/profile_imgs/default.png')
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name = 'teachers')
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name= 'teachers')
 
@@ -24,6 +26,7 @@ class Teacher(models.Model):
     """
 
 class Student(models.Model):
+    profile_img = models.ImageField(upload_to='users/profile_imgs/', default = 'users/profile_imgs/default.png')
     student_id = models.AutoField(primary_key=True)
     gpa = models.FloatField(null = False)
 

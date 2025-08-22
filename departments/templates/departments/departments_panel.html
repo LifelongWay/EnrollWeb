@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}
+    Departments Panel
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'departments/css/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="panel-header">
+    <h1>Departments</h1>
+</div>
+
+<div class="departments-container">
+    {% for department in departments %}
+    <div class="department-card">
+        <h3 class="department-name">{{ department.name }}</h3>
+        <div class="department-buttons">
+            <a href="{% url 'home' %}" class="btn btn-edit">
+                <i class="fas fa-pen"></i> Edit
+            </a>
+            <a href="{% url 'home'  %}" class="btn btn-delete">
+                <i class="fas fa-trash-alt"></i> Delete
+            </a>
+            <a href="{% url 'home' %}" class="btn btn-courses">
+                <i class="fas fa-book"></i> Courses
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
