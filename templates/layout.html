@@ -18,6 +18,58 @@
     {% comment %} App specific css {% endcomment %}
     {% block extra_css %}
     {% endblock %}
+    
+    <style>
+        .nav-divider {
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            height: 30px;
+            margin: 0 0.75rem;
+        }
+        
+        @media (max-width: 991.98px) {
+            .nav-divider {
+                display: none;
+            }
+            
+            .navbar-nav .nav-item {
+                margin: 0.25rem 0;
+            }
+        }
+        
+        .navbar-content-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+        
+        .navbar-panel-items {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .navbar-user-items {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        
+        .nav-link {
+            white-space: nowrap;
+        }
+        
+        @media (min-width: 992px) {
+            .navbar-panel-items .nav-item {
+                margin-right: 0.5rem;
+            }
+            
+            .navbar-user-items .nav-item {
+                margin-left: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
@@ -25,7 +77,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, #0d6efd, #3a8dde);">
       <div class="container">
 
-        {% comment %}        Role based BADGE           {% endcomment %}
+        {% comment %} Role based BADGE {% endcomment %}
         <a class="navbar-brand d-flex align-items-center me-3 fs-4" href="{% url 'home' %}">
           <i class="fas fa-user-graduate me-2"></i>EnrollSys
           {% if user.is_authenticated %}
@@ -56,32 +108,42 @@
 
         <!-- Navbar links -->
         <div class="collapse navbar-collapse" id="navbarContent">
-          <div class="d-flex flex-row w-100 justify-content-between align-items-center flex-wrap">
+          <div class="navbar-content-container">
 
             <!-- Left links -->
             {% if user|has_group:"Registrar" %}
-            <ul class="navbar-nav mb-2 mb-lg-0 d-flex flex-row flex-wrap fs-5">
-              <li class="nav-item">
-                  <a class="nav-link text-white" href="{% url 'users:panel' role='students' %}">
-                      <i class="fas fa-user-graduate me-1"></i> Students Panel
-                  </a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link text-white" href="{% url 'users:panel' role='teachers' %}">
-                      <i class="fas fa-chalkboard-teacher me-1"></i> Teachers Panel
-                  </a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link text-white" href="{% url 'departments:panel' %}">
-                      <i class="fas fa-building me-1"></i> Departments Panel
-                  </a>
-              </li>
-          </ul>
-
+              <ul class="navbar-nav navbar-panel-items mb-2 mb-lg-0 fs-5">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'users:panel' role='students' %}">
+                        <i class="fas fa-user-graduate me-1"></i> Students
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'users:panel' role='teachers' %}">
+                        <i class="fas fa-chalkboard-teacher me-1"></i> Teachers
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'departments:panel' %}">
+                        <i class="fas fa-building me-1"></i> Departments
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'courses:panel' %}">
+                        <i class="fas fa-book me-1"></i> Courses
+                    </a>
+                </li>
+              </ul>
+            {% else %}
+              <div class="navbar-panel-items"></div> <!-- Empty spacer for alignment -->
             {% endif %}
+
             <!-- Right user controls -->
-            <ul class="navbar-nav mb-2 mb-lg-0 d-flex flex-row flex-wrap align-items-center gap-2 fs-5">
+            <ul class="navbar-nav navbar-user-items mb-2 mb-lg-0 fs-5">
               {% if user.is_authenticated %}
+                {% if user|has_group:"Registrar" %}
+                <div class="nav-divider"></div>
+                {% endif %}
                 <li class="nav-item">
                   <span class="badge bg-light text-dark p-2 small">
                     <i class="fas fa-user-circle me-1"></i>{{ user.username }}
