@@ -16,7 +16,7 @@
 </div>
 
 <div class="departments-container">
-    {% if form %}
+    {% if form and not editing_dept_id %}
     <form class = 'department-card' method = 'post' action = "{% url 'departments:add' %}"/>
         {% csrf_token %}
         <h3 class="department-name">
@@ -35,21 +35,41 @@
     </form>
     {% endif %}
 
-    {% for department in departments %}
-    <div class="department-card">
-        <h3 class="department-name">{{ department.name }}</h3>
-        <div class="department-buttons">
-            <a href="{% url 'home' %}" class="btn btn-edit">
-                <i class="fas fa-pen"></i> Edit
-            </a>
-            <a href="{% url 'home'  %}" class="btn btn-delete">
-                <i class="fas fa-trash-alt"></i> Delete
-            </a>
-            <a href="{% url 'home' %}" class="btn btn-courses">
-                <i class="fas fa-book"></i> Courses
-            </a>
-        </div>
-    </div>
+        {% for department in departments %}
+
+        {% if department.dept_id == editing_dept_id %}
+            <form class = 'department-card' method = 'post' action = "{% url 'departments:edit' dept_id=editing_dept_id%}"/>
+                {% csrf_token %}
+                <h3 class="department-name">
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <div class="error-message">
+                            {{ form.name.errors.0 }}
+                        </div>
+                    {% endif %}
+                </h3>
+                <div class="department-buttons">
+                    <button class="btn add-btn" href="{% url 'departments:edit' dept_id=department.dept_id %}">
+                        <i class="fas fa-building me-1"></i> save changes
+                    </button>
+                </div>
+            </form>
+        {% else %}
+            <div class="department-card">
+                <h3 class="department-name">{{ department.name }}</h3>
+                <div class="department-buttons">
+                    <a href="{% url 'departments:edit' dept_id=department.dept_id %}" class="btn btn-edit">
+                        <i class="fas fa-pen"></i> Edit
+                    </a>
+                    <a href="{% url 'home'  %}" class="btn btn-delete">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </a>
+                    <a href="{% url 'home' %}" class="btn btn-courses">
+                        <i class="fas fa-book"></i> Courses
+                    </a>
+                </div>
+            </div>
+        {% endif %}
     {% endfor %}
 </div>
 {% endblock %}
