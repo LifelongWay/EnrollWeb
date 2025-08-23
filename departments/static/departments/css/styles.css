@@ -82,3 +82,36 @@
 @media (max-width: 480px) {
     .department-card { width: 100%; }
 }
+
+
+/* form */
+.department-name input {
+    width: 86%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #4a6fa5; /* softer blue border */
+    background-color: #0f2a4d;  /* darker shade of blue */
+    color: #ffffff;             /* white text for contrast */
+    font-size: 16px;
+
+    /* smooth transitions */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* placeholder text */
+.department-name input::placeholder {
+    color: #b0c7e4; /* light blue/gray */
+}
+
+/* focus effect */
+.department-name input:focus {
+    outline: none;
+    border-color: #1e90ff; /* brighter blue on focus */
+    box-shadow: 0 0 6px rgba(30, 144, 255, 0.6);
+}
+
+.error-message {
+    color: #ff6b6b;   /* soft red */
+    font-size: 14px;
+    margin-top: 6px;
+}

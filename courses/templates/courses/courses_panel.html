@@ -8,16 +8,16 @@
 
 {% block more_navigation %}
 <div class="container my-5">
-    <div class="d-flex align-items-center mb-4">
-        <h2 class="fs-2 text-primary fw-bold">Courses & Sections</h2>
+    <div class="panel-header d-flex align-items-center mb-4">
+        <h1>Courses & Sections</h2>
         <div class="d-flex ms-auto gap-2">
             {% if user|has_group:"Registrar" or user|has_group:"Admin" %}
-                <a href="{% url 'courses:add' type='section' %}" class="add-course-btn">
+                <a href="{% url 'courses:add' type='section' %}" class="add-btn">
                     <i class="fas fa-plus me-2"></i>
                     Arrange Section
                 </a>
                 
-                <a href = "{% url 'courses:add' type='course' %}" class="add-course-btn">
+                <a href = "{% url 'courses:add' type='course' %}" class="add-btn">
                     <i class="fas fa-plus me-2"></i>
                     Add Course
                 </a>
