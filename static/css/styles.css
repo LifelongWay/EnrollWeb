@@ -122,7 +122,7 @@ footer {
 .panel-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 40px;
     justify-content: flex-start;
     padding: 20px;
     background-color: #e6f0fa; /* Light blue background */

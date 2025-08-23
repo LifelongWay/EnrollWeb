@@ -47,3 +47,8 @@ def departments_edit_view(request, dept_id):
     context['form'] = form
 
     return render(request, 'departments/departments_panel.html', context)
+
+def departments_delete_view(request, dept_id):
+    deleting_department = Department.objects.get(dept_id = dept_id)
+    deleting_department.delete()
+    return redirect('departments:panel')
