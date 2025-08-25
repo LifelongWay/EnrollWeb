@@ -54,43 +54,47 @@
         <div class="profile-container panel-container">
             {% if students %}
                 {% for student in students %}
-                    <div class="profile-card">
-                        <div class="profile-img-div">
-                            <img src="{{ student.profile_img.url }}">
+                    <a href="{% url 'users:profile' user_id=student.user.pk %}"  />
+                        <div class="profile-card">
+                            <div class="profile-img-div">
+                                <img src="{{ student.profile_img.url }}">
+                            </div>
+                            <div class="profile-info">
+                                <p class="user-name">{{ student }}</p>
+                                <p class="user-id">stud_id: {{ student.student_id }}</p>
+                                <p class="user-dept">{{ student.department }}</p>
+                            </div>
+                            <button class="edit-btn" title="Edit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z" />
+                                </svg>
+                            </button>
                         </div>
-                        <div class="profile-info">
-                            <p class="user-name">{{ student }}</p>
-                            <p class="user-id">stud_id: {{ student.student_id }}</p>
-                            <p class="user-dept">{{ student.department }}</p>
-                        </div>
-                        <button class="edit-btn" title="Edit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z" />
-                            </svg>
-                        </button>
-                    </div>
+                    </a>
                 {% endfor %}
             {% elif teachers %}
                 {% for teacher in teachers %}
-                    <div class="profile-card">
-                        <div class="profile-img-div">
-                            <img src="{{ teacher.profile_img.url }}">
+                    <a href="{% url 'users:profile' user_id=teacher.user.pk %}"  />
+                        <div class="profile-card">
+                            <div class="profile-img-div">
+                                <img src="{{ teacher.profile_img.url }}">
+                            </div>
+                            <div class="profile-info">
+                                <p class="user-name">{{ teacher }}</p>
+                                <p class="user-id">stud_id: {{ teacher.user.pk }}</p>
+                                <p class="user-dept">{{ teacher.department }}</p>
+                            </div>
+                            <button class="edit-btn" title="Edit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z" />
+                                </svg>
+                            </button>
                         </div>
-                        <div class="profile-info">
-                            <p class="user-name">{{ teacher }}</p>
-                            <p class="user-id">stud_id: {{ teacher.user.pk }}</p>
-                            <p class="user-dept">{{ teacher.department }}</p>
-                        </div>
-                        <button class="edit-btn" title="Edit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z" />
-                            </svg>
-                        </button>
-                    </div>
+                    </a>
                 {%  endfor %}
             {% endif %}
         </div>

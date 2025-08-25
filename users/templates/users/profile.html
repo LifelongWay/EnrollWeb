@@ -8,29 +8,34 @@
 {% endblock %}
 
 {% block content %}
-<div class="profile-container">
+<div class="profile-container" style = "position:relative">
+
+    <a href="{% url 'users:profile-edit' user_id=user_viewed.pk %}" class="edit-btn" title="Edit Profile">
+        <i class="fas fa-edit me-1" style = "font-size: 2rem;"></i>
+    </a>
+
     <!-- Profile Image -->
         <img class="profile-img" src="
-        {% if user|has_group:'Student' and user.student.profile_img.url %}
-            {{ user.student.profile_img.url }}
-        {% elif user|has_group:'Teacher' and user.teacher.profile_img.url %}
-            {{ user.teacher.profile_img.url }}
-        {% elif user|has_group:'Registrar' %}
-            {{ user.registrar.profile_img.url }}
+        {% if user_viewed|has_group:'Student' and user_viewed.student.profile_img.url %}
+            {{ user_viewed.student.profile_img.url }}
+        {% elif user_viewed|has_group:'Teacher' and user_viewed.teacher.profile_img.url %}
+            {{ user_viewed.teacher.profile_img.url }}
+        {% elif user_viewed|has_group:'Registrar' %}
+            {{ user_viewed.registrar.profile_img.url }}
         {% else %}
             {% static 'users/profile_imgs/default.png' %}
-        {% endif %}" alt="{{ user.get_full_name }}">
+        {% endif %}" alt="{{ user_viewed }}">
 
     <!-- Name -->
-    <div class="user-name">{{ user.get_full_name }}</div>
+    <div class="user-name">{{ user_viewed }}</div>
 
     <!-- Role Badge -->
-    <div class="role-badge badge rounded-pill text-dark ms-2 small {% if user|has_group:'Student' %}role-student{% elif user|has_group:'Teacher' %}role-teacher{% elif user|has_group:'Registrar' %}role-registrar{% else %}role-default{% endif %}">
-        {% if user|has_group:'Student' %}
+    <div class="role-badge badge rounded-pill text-dark ms-2 small {% if user_viewed|has_group:'Student' %}role-student{% elif user_viewed|has_group:'Teacher' %}role-teacher{% elif user_viewed|has_group:'Registrar' %}role-registrar{% else %}role-default{% endif %}">
+        {% if user_viewed|has_group:'Student' %}
         <i class="fas fa-user-graduate"></i> Student
-        {% elif user|has_group:'Teacher' %}
+        {% elif user_viewed|has_group:'Teacher' %}
         <i class="fas fa-chalkboard-teacher"></i> Teacher
-        {% elif user|has_group:'Registrar' %}
+        {% elif user_viewed|has_group:'Registrar' %}
         <i class="fas fa-user-shield"></i> Registrar
         {% else %}
         <i class="fas fa-user"></i> User
@@ -38,29 +43,56 @@
     </div>
 
     <!-- Extra Details -->
-    <div class="profile-details ">
 
-        {% comment %} Common fields {% endcomment %}
-        <p><strong>Username:</strong> {{ user }}</p>
-        <p><strong>Name:</strong> {{ user.first_name }}</p>
-        <p><strong>Surname:</strong> {{ user.last_name }}</p>
-        <p><strong>Email:</strong> 
-            {% if user.email %}
-                {{ user.email }}
-            {% else %}
-                none
-            {% endif %}
-        </p>
+    {% if form %}
+        <form class="profile-details" method = 'post' action = "{% url 'users:profile-edit' user_id=user.pk %}">
+            {% comment %} Common fields {% endcomment %}
+            <p><strong>Username:</strong> {{ user_viewed }}</p>
+            <p><strong>Name:</strong> {{ form.name }}</p>
+            <p><strong>Surname:</strong> {{ form.surname }}</p>
+            <p><strong>Email:</strong> 
+                {% if user_viewed.email %}
+                    {{ form.email }}
+                {% else %}
+                    none
+                {% endif %}
+            </p>
 
-        {% if user|has_group:"Student" %}
-            <p><strong>Department:</strong> {{ user.student.department.name }}</p>
-            <p><strong>GPA:</strong> {{ user.student.gpa }}</p>
-            {% if user.student.advisor %}
-                <p><strong>Advisor:</strong> {{ user.student.advisor }}</p>
+            {% if user|has_group:"Student" %}
+                <p><strong>Department:</strong> {{ user_viewed.student.department.name }}</p>
+                <p><strong>GPA:</strong> {{ user_viewed.student.gpa }}</p>
+                {% if user.student.advisor %}
+                    <p><strong>Advisor:</strong> {{ user_viewed.student.advisor }}</p>
+                {% endif %}
+            {% elif user|has_group:"Teacher" %}
+                <p><strong>Department:</strong> {{ user_viewed.teacher.department.name }}</p>
             {% endif %}
-        {% elif user|has_group:"Teacher" %}
-            <p><strong>Department:</strong> {{ user.teacher.department.name }}</p>
-        {% endif %}
-    </div>
+        </form>
+    {% else %}
+        <div class="profile-details ">
+            {% comment %} Common fields {% endcomment %}
+            <p><strong>Username:</strong> {{ user_viewed }}</p>
+            <p><strong>Name:</strong> {{ user_viewed.first_name }}</p>
+            <p><strong>Surname:</strong> {{ user_viewed.last_name }}</p>
+            <p><strong>Email:</strong> 
+                {% if user_viewewd.email %}
+                    {{ user_viewed.email }}
+                {% else %}
+                    none
+                {% endif %}
+            </p>
+
+            {% if user_viewed|has_group:"Student" %}
+                <p><strong>Department:</strong> {{ user_viewed.student.department.name }}</p>
+                <p><strong>GPA:</strong> {{ user_viewed.student.gpa }}</p>
+                {% if user_viewed.student.advisor %}
+                    <p><strong>Advisor:</strong> {{ user_viewed.student.advisor }}</p>
+                {% endif %}
+            {% elif user_viewed|has_group:"Teacher" %}
+                <p><strong>Department:</strong> {{ user_viewed.teacher.department.name }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+    
 </div>
 {% endblock %}

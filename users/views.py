@@ -92,5 +92,18 @@ def account_add_view(request, role):
 # Profile page [COMMON]
 def profile_view(request, user_id):
     user = User.objects.get(pk = user_id)
-    context = {'user': user}
+    context = {'user_viewed': user}
     return render(request, 'users/profile.html', context)
+
+def profile_edit_view(request, user_id):
+
+    user_under_edit = User.objects.get(pk = user_id)
+    
+    form = EnrollSysRegistrationForm()
+
+
+    if user_under_edit.groups.filter(name = 'Student').exists():
+        form = EnrollSysRegistrationForm(request.POST)
+        
+        if form.is_valid():
+            form.save()

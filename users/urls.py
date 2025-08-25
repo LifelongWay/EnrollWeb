@@ -10,4 +10,5 @@ urlpatterns = [
     path('users/panel/<str:role>/', views.roles_view, name = 'panel'),
     path('users/add/<str:role>/', views.account_add_view, name = 'add'),
     path('user/profile/<int:user_id>/', views.profile_view, name = 'profile'),
+    path('user/profile/edit/<int:user_id>/', views.profile_edit_view, name = 'profile-edit'),
 ]
