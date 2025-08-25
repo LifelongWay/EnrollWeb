@@ -23,32 +23,31 @@
 
     <div class="{% if form %}panel-content{% endif %}">
         {% if form %}
-        <div class="user-add-form-container">
-            <h2>Add New {{ role|capfirst }}</h2>
+            <div class="user-add-form-container">
+                <h2>Add New {{ role|capfirst }}</h2>
 
-            <form class="user-add-form" method = 'post' action = '{% url 'users:add' role=role %}'>
-                {% csrf_token %}
-                {{ form.name.label_tag }}
-                {{ form.name }}
+                <form class="user-add-form" method = 'post' action = '{% url 'users:add' role=role %}'>
+                    {% csrf_token %}
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
 
-                {{ form.surname.label_tag }}
-                {{ form.surname }}
+                    {{ form.surname.label_tag }}
+                    {{ form.surname }}
 
-                {{ form.email.label_tag }}
-                {{ form.email }}
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
 
-                {{ form.password.label_tag }}
-                {{ form.password }}
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
 
-                <p>Role: {{role.capitalize}}</p>
-                {{form.role}}
+                    <p>Role: {{role.capitalize}}</p>
+                    {{form.role}}
 
-                {{ form.department.label_tag }}
-                {{ form.department }}
-                <button>Add</button>
-            </form>
-
-        </div>
+                    {{ form.department.label_tag }}
+                    {{ form.department }}
+                    <button>Add</button>
+                </form>
+            </div>
         {% endif %}
 
         <div class="profile-container panel-container">

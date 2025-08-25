@@ -37,6 +37,18 @@
 .role-registrar { background-color: var(--warning-color); color: #000; }
 .role-default { background-color: var(--dark-color); color: #fff; }
 
+.role-superuser {
+    background: linear-gradient(135deg, #e63946, #b71c1c); /* cherry red gradient */
+    color: #f8f9fa; /* light grey/white text for contrast */
+    font-weight: 600; 
+  
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3); /* subtle black shadow for depth */
+}
+.role-superuser i {
+    color: #fff; /* icon white to match text */
+}
+
+
 /* Profile details spacing */
 .profile-details {
     margin-top: 1.5rem;

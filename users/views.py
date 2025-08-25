@@ -95,15 +95,21 @@ def profile_view(request, user_id):
     context = {'user_viewed': user}
     return render(request, 'users/profile.html', context)
 
+
 def profile_edit_view(request, user_id):
-
     user_under_edit = User.objects.get(pk = user_id)
-    
-    form = EnrollSysRegistrationForm()
+    context = {'user_viewed': user_under_edit}
 
+    form = EnrollSysRegistrationForm(user=user_under_edit)
+    context['form'] = form
 
-    if user_under_edit.groups.filter(name = 'Student').exists():
-        form = EnrollSysRegistrationForm(request.POST)
-        
+    if request.method == 'POST':
+        form = EnrollSysRegistrationForm(request.POST, user=user_under_edit)
+        context['form'] = form
+
         if form.is_valid():
-            form.save()
+            form.save(user=user_under_edit)
+            return redirect('users:profile', user_id=user_id)
+        else:
+            print(form.errors)
+    return render(request, 'users/profile.html', context)

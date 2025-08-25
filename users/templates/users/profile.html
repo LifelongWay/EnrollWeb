@@ -15,58 +15,65 @@
     </a>
 
     <!-- Profile Image -->
-        <img class="profile-img" src="
-        {% if user_viewed|has_group:'Student' and user_viewed.student.profile_img.url %}
-            {{ user_viewed.student.profile_img.url }}
-        {% elif user_viewed|has_group:'Teacher' and user_viewed.teacher.profile_img.url %}
-            {{ user_viewed.teacher.profile_img.url }}
-        {% elif user_viewed|has_group:'Registrar' %}
-            {{ user_viewed.registrar.profile_img.url }}
+        {% if user_viewed|has_group:'Student' and user_viewed.student.profile_img %}
+            <img class="profile-img" src="{{ user_viewed.student.profile_img.url }}" alt="{{ user_viewed }}">
+        {% elif user_viewed|has_group:'Teacher' and user_viewed.teacher.profile_img %}
+            <img class="profile-img" src="{{ user_viewed.teacher.profile_img.url }}" alt="{{ user_viewed }}">
+        {% elif user_viewed|has_group:'Registrar' and user_viewed.registrar.profile_img %}
+            <img class="profile-img" src="{{ user_viewed.registrar.profile_img.url }}" alt="{{ user_viewed }}">
         {% else %}
-            {% static 'users/profile_imgs/default.png' %}
-        {% endif %}" alt="{{ user_viewed }}">
+            <img class="profile-img" src="{{ MEDIA_URL }}users/profile_imgs/default.png">
+        {% endif %}
+
 
     <!-- Name -->
     <div class="user-name">{{ user_viewed }}</div>
 
     <!-- Role Badge -->
-    <div class="role-badge badge rounded-pill text-dark ms-2 small {% if user_viewed|has_group:'Student' %}role-student{% elif user_viewed|has_group:'Teacher' %}role-teacher{% elif user_viewed|has_group:'Registrar' %}role-registrar{% else %}role-default{% endif %}">
+   <div class="role-badge badge rounded-pill text-dark ms-2 small 
+        {% if user_viewed|has_group:'Student' %}role-student
+        {% elif user_viewed|has_group:'Teacher' %}role-teacher
+        {% elif user_viewed|has_group:'Registrar' %}role-registrar
+        {% elif user_viewed.is_superuser %}role-superuser
+        {% else %}role-default
+        {% endif %}">
+        
         {% if user_viewed|has_group:'Student' %}
-        <i class="fas fa-user-graduate"></i> Student
+            <i class="fas fa-user-graduate"></i> Student
         {% elif user_viewed|has_group:'Teacher' %}
-        <i class="fas fa-chalkboard-teacher"></i> Teacher
+            <i class="fas fa-chalkboard-teacher"></i> Teacher
         {% elif user_viewed|has_group:'Registrar' %}
-        <i class="fas fa-user-shield"></i> Registrar
+            <i class="fas fa-user-shield"></i> Registrar
+        {% elif user_viewed.is_superuser %}
+            <i class="fas fa-user-shield me-1"></i> Admin
         {% else %}
-        <i class="fas fa-user"></i> User
+            <i class="fas fa-user"></i> User
         {% endif %}
     </div>
+
 
     <!-- Extra Details -->
 
     {% if form %}
-        <form class="profile-details" method = 'post' action = "{% url 'users:profile-edit' user_id=user.pk %}">
+        <form class="profile-details" method = 'post' action = "{% url 'users:profile-edit' user_id=user_viewed.pk %}">
+            {% csrf_token %}
             {% comment %} Common fields {% endcomment %}
             <p><strong>Username:</strong> {{ user_viewed }}</p>
             <p><strong>Name:</strong> {{ form.name }}</p>
             <p><strong>Surname:</strong> {{ form.surname }}</p>
-            <p><strong>Email:</strong> 
-                {% if user_viewed.email %}
-                    {{ form.email }}
-                {% else %}
-                    none
-                {% endif %}
-            </p>
+            <p><strong>Email:</strong> {{ form.email }} </p>
 
-            {% if user|has_group:"Student" %}
-                <p><strong>Department:</strong> {{ user_viewed.student.department.name }}</p>
+            {% if user_viewed|has_group:"Student" %}
+                <p><strong>Department:</strong> {{ form.department }}</p>
                 <p><strong>GPA:</strong> {{ user_viewed.student.gpa }}</p>
-                {% if user.student.advisor %}
+                {% if user_viewed.student.advisor %}
                     <p><strong>Advisor:</strong> {{ user_viewed.student.advisor }}</p>
                 {% endif %}
-            {% elif user|has_group:"Teacher" %}
-                <p><strong>Department:</strong> {{ user_viewed.teacher.department.name }}</p>
+            {% elif user_viewed|has_group:"Teacher" %}
+                <p><strong>Department:</strong> {{ form.department }}</p>
             {% endif %}
+
+            <button>Apply Changes</button>
         </form>
     {% else %}
         <div class="profile-details ">
@@ -74,13 +81,7 @@
             <p><strong>Username:</strong> {{ user_viewed }}</p>
             <p><strong>Name:</strong> {{ user_viewed.first_name }}</p>
             <p><strong>Surname:</strong> {{ user_viewed.last_name }}</p>
-            <p><strong>Email:</strong> 
-                {% if user_viewewd.email %}
-                    {{ user_viewed.email }}
-                {% else %}
-                    none
-                {% endif %}
-            </p>
+            <p><strong>Email:</strong> {{ user_viewed.email }} </p>
 
             {% if user_viewed|has_group:"Student" %}
                 <p><strong>Department:</strong> {{ user_viewed.student.department.name }}</p>
