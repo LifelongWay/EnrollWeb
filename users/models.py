@@ -5,11 +5,18 @@ from departments.models import Department
 class Teacher(models.Model):
     profile_img = models.ImageField(upload_to='users/profile_imgs/', default = 'users/profile_imgs/default.png')
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name = 'teachers')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name = 'teacher')
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name= 'teachers')
 
     def __str__(self):
-        return f'{self.user.username.split('.')[0].capitalize()} {self.user.username.split('.')[1].capitalize()}'
+        parts = self.user.username.split('.')
+        if len(parts) >= 2:
+            first, last = parts[0].capitalize(), parts[1].capitalize()
+        else:
+            first, last = self.user.first_name, self.user.last_name
+        return f"{first} {last}"
+    
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs) # save teacher
 
@@ -31,7 +38,7 @@ class Student(models.Model):
     gpa = models.FloatField(null = False)
 
     # ISA rel
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name= 'Student')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name= 'student')
     # studies_in rel
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null = False, blank = False, related_name = 'advised_students')
     # advised_by rel
@@ -45,11 +52,18 @@ class Student(models.Model):
         self.user.groups.add(student_group) # add group to created student
 
     def __str__(self):
-        return f'{self.user.username.split('.')[0].capitalize()} {self.user.username.split('.')[1].capitalize()}'
-
+        parts = self.user.username.split('.')
+        if len(parts) >= 2:
+            first, last = parts[0].capitalize(), parts[1].capitalize()
+        else:
+            first, last = self.user.first_name, self.user.last_name
+        return f"{first} {last}"
+    
 class Registrar(models.Model):
+    profile_img = models.ImageField(upload_to='users/profile_imgs/', default = 'users/profile_imgs/default.png')
     registrar_id = models.AutoField(primary_key=True)
-    user = models.OneToOneField(User ,on_delete=models.CASCADE, related_name= 'Registrar')
+    user = models.OneToOneField(User ,on_delete=models.CASCADE, related_name= 'registrar')
+    
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 

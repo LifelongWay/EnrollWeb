@@ -1,0 +1,55 @@
+/* Profile container */
+.profile-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--primary-color), #0f2a4d); /* dark blue gradient */
+    border-radius: 12px;
+    color: #ffffff;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Profile image */
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid var(--primary-color);
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
+/* Role badge */
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 1rem;
+}
+
+/* Minimal role colors using root variables */
+.role-student { background-color: var(--primary-color); color: #fff; }
+.role-teacher { background-color: var(--success-color); color: #fff; }
+.role-registrar { background-color: var(--warning-color); color: #000; }
+.role-default { background-color: var(--dark-color); color: #fff; }
+
+/* Profile details spacing */
+.profile-details {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.profile-details p {
+    margin: 0.5rem 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .profile-container { padding: 1.5rem; }
+    .profile-details { font-size: 1rem; }
+}
+

@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from .forms import EnrollSysRegistrationForm
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.models import Group
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import Group, User
+from django.contrib.auth import logout, login, authenticate
 from .models import Student, Teacher
+
 # Create your views here.
 def login_view(request):  # Renamed from 'login'
     if request.method == 'POST':
@@ -60,8 +61,36 @@ def logout_view(request):
 # show management panel for given role [REGISTRAR-ONLY]
 def roles_view(request, role):
     context = {}
-    if role == 'students':
+    context['role'] = role
+    if role == 'student':
         context['students'] = Student.objects.all()
-    elif role == 'teachers':
+    elif role == 'teacher':
         context['teachers'] = Teacher.objects.all()
     return render(request, 'users/registrar/user_panel.html', context)
+
+def account_add_view(request, role):
+    context = {}
+    context['role'] = role
+
+    if role == 'student':
+        context['students'] = Student.objects.all()
+    elif role == 'teacher':
+        context['teachers'] = Teacher.objects.all()
+    context['form'] = EnrollSysRegistrationForm(initial = {'role': role})
+
+    if request.method == 'POST':
+        form = EnrollSysRegistrationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('users:panel', role=role)
+        else:
+            print(form.errors)
+    return render(request, 'users/registrar/user_panel.html', context)
+
+
+# Profile page [COMMON]
+def profile_view(request, user_id):
+    user = User.objects.get(pk = user_id)
+    context = {'user': user}
+    return render(request, 'users/profile.html', context)

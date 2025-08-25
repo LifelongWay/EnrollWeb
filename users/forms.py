@@ -2,7 +2,10 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django import forms
 
-class EnrollSysRegistrationForm(UserCreationForm):
+from departments.models import Department
+
+from .models import Teacher, Student
+class EnrollSysRegistrationForm(forms.Form):
     name = forms.CharField(
         required = True, 
         label = 'First Name',
@@ -21,13 +24,34 @@ class EnrollSysRegistrationForm(UserCreationForm):
         widget = forms.EmailInput(attrs = {'class': 'form-input' ,'placeholder': 'exampl@email.com'})
     )
 
-    class Meta:
-        model = User
-        fields = ('name', 'surname', 'email', 'password1', 'password2')
+    password = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'class': 'form-input', 'placeholder': 'Password'})
+    )
+
+    ## used by Registrars ONLY ##
+    ROLE_CHOICES = [
+            ('teacher', 'Teacher'),
+            ('student', 'Student'),
+    ]
+
+    role = forms.ChoiceField(
+        choices = ROLE_CHOICES,
+        label = 'Role',
+        widget=forms.HiddenInput()
+    )
+    
+    department = forms.ModelChoiceField(
+        queryset= Department.objects.all(), 
+        required = True,
+        label = 'Department'
+    )
+
+    #############  ##############
+
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['password1'].help_text = 'Minimum 8 chars!'
 
 
     # CUSTOM VALIDATION: 
@@ -41,10 +65,32 @@ class EnrollSysRegistrationForm(UserCreationForm):
     
     
     def save(self, commit = True):
-        user = super().save(commit = False)
-        user.first_name = self.cleaned_data['name']
-        user.last_name = self.cleaned_data['surname']
-        user.username = self.cleaned_data['email'].split('@')[0]
+        # Init User instance
+        user = User(
+            first_name = self.cleaned_data['name'],
+            last_name = self.cleaned_data['surname'],
+            username = self.cleaned_data['email'].split('@')[0], 
+        )
+        user.set_password(self.cleaned_data['password'])
+
+
         if commit:
             user.save()
+            
+            # Create related Student/Teacher account after creating User
+            if self.cleaned_data.get('role') == 'student':
+                Student.objects.create(
+                    user = user,
+                    gpa = 0.0,
+                    department = self.cleaned_data['department']
+                )
+            elif self.cleaned_data.get('role') == 'teacher':
+                Teacher.objects.create(
+                    user = user, 
+                    department = self.cleaned_data['department']
+                )
+            else:
+                print('!! EMPTY USER CREATED !!')
+        
         return user
+    

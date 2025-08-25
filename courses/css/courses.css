@@ -1,34 +1,4 @@
-/* ================= BUTTON ================= */
-/* Add Course Button - Sleek & Modern */
-.add-course-btn {
-    padding: 0.5rem 1rem; /* smaller than btn-lg */
-    font-size: 0.9rem;
-    font-weight: 600;
-    border-radius: 0.4rem;
 
-    background: #0d6efd; /* primary blue */
-    color: #fff;
-    border: none;
-
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    transition: all 0.25s ease;
-    text-decoration: none;
-}
-
-.add-course-btn i {
-    font-size: 1rem; /* icon slightly smaller */
-}
-
-.add-course-btn:hover {
-    background: #0b5ed7; /* darker blue */
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-    color: #fff;
-    text-decoration: none;
-}
 
 
 

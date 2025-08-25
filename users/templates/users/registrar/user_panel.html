@@ -11,36 +11,63 @@
 {% block extra_css %}
     <link rel = 'stylesheet' href = "{% static 'users/css/styles.css' %}"/>
 {% endblock %}
-
 {% block content %}
-        <div class="panel-header">
-                {% if students %}
-                    <h1>Student Panel</h1>
-                {% elif teachers %}
-                    <h1>Teacher Panel</h1>
-                {% else %}
-                    <h1> Panel </h1>
-                {% endif %}
+<div class="panel-wrapper">
+
+    <div class="panel-header">
+        <h1>{{ role.capitalize }} Panel</h1>
+        <a class="btn btn-success add-btn" href="{% url 'users:add' role=role %}">
+            <i class="fas fa-plus me-1"></i> Add Account
+        </a>
+    </div>
+
+    <div class="{% if form %}panel-content{% endif %}">
+        {% if form %}
+        <div class="user-add-form-container">
+            <h2>Add New {{ role|capfirst }}</h2>
+
+            <form class="user-add-form" method = 'post' action = '{% url 'users:add' role=role %}'>
+                {% csrf_token %}
+                {{ form.name.label_tag }}
+                {{ form.name }}
+
+                {{ form.surname.label_tag }}
+                {{ form.surname }}
+
+                {{ form.email.label_tag }}
+                {{ form.email }}
+
+                {{ form.password.label_tag }}
+                {{ form.password }}
+
+                <p>Role: {{role.capitalize}}</p>
+                {{form.role}}
+
+                {{ form.department.label_tag }}
+                {{ form.department }}
+                <button>Add</button>
+            </form>
+
         </div>
+        {% endif %}
 
         <div class="profile-container panel-container">
             {% if students %}
                 {% for student in students %}
                     <div class="profile-card">
-                        {% comment %} Profile Image {% endcomment %}
                         <div class="profile-img-div">
                             <img src="{{ student.profile_img.url }}">
                         </div>
-                        {% comment %} Profile Info {% endcomment %}
                         <div class="profile-info">
                             <p class="user-name">{{ student }}</p>
                             <p class="user-id">stud_id: {{ student.student_id }}</p>
                             <p class="user-dept">{{ student.department }}</p>
                         </div>
-                        <!-- Floating Edit Button with SVG -->
-                        <button class="edit-btn" title='dd'>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/>
+                        <button class="edit-btn" title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z" />
                             </svg>
                         </button>
                     </div>
@@ -48,25 +75,26 @@
             {% elif teachers %}
                 {% for teacher in teachers %}
                     <div class="profile-card">
-                        {% comment %} Profile Image {% endcomment %}
                         <div class="profile-img-div">
                             <img src="{{ teacher.profile_img.url }}">
                         </div>
-                        {% comment %} Profile Info {% endcomment %}
                         <div class="profile-info">
                             <p class="user-name">{{ teacher }}</p>
-                            <p class="user-id">user_id: {{ teacher.user.pk }}</p>
+                            <p class="user-id">stud_id: {{ teacher.user.pk }}</p>
                             <p class="user-dept">{{ teacher.department }}</p>
                         </div>
-                        <!-- Floating Edit Button with SVG -->
-                        <button class="edit-btn" title='dd'>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/>
+                        <button class="edit-btn" title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z" />
                             </svg>
                         </button>
                     </div>
-                {% endfor %}
+                {%  endfor %}
             {% endif %}
         </div>
-        
+    </div>
+</div>
+
 {% endblock %}

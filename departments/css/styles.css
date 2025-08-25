@@ -67,9 +67,27 @@
 /* Button colors - all blue shades */
 .btn-edit { background-color: #1976D2; }       /* Medium blue */
 .btn-edit:hover { background-color: #1565C0; }
+.btn-delete {
+    background: linear-gradient(135deg, #0D47A1, #B71C1C); /* dark blue to dark red */
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
 
-.btn-delete { background-color: #0D47A1; }     /* Darker blue */
-.btn-delete:hover { background-color: #0B3C91; }
+/* Hover effect */
+.btn-delete:hover {
+    background: linear-gradient(135deg, #0B3C91, #C62828); /* slightly brighter shades */
+    transform: translateY(-2px);
+    cursor: pointer;
+}
+
+/* Active / click effect */
+.btn-delete:active {
+    transform: translateY(0);
+}
 
 .btn-courses { background-color: #64B5F6; }    /* Light blue */
 .btn-courses:hover { background-color: #42A5F5; }
@@ -81,4 +99,37 @@
 
 @media (max-width: 480px) {
     .department-card { width: 100%; }
+}
+
+
+/* form */
+.department-name input {
+    width: 86%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #4a6fa5; /* softer blue border */
+    background-color: #0f2a4d;  /* darker shade of blue */
+    color: #ffffff;             /* white text for contrast */
+    font-size: 16px;
+
+    /* smooth transitions */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* placeholder text */
+.department-name input::placeholder {
+    color: #b0c7e4; /* light blue/gray */
+}
+
+/* focus effect */
+.department-name input:focus {
+    outline: none;
+    border-color: #1e90ff; /* brighter blue on focus */
+    box-shadow: 0 0 6px rgba(30, 144, 255, 0.6);
+}
+
+.error-message {
+    color: #ff6b6b;   /* soft red */
+    font-size: 14px;
+    margin-top: 6px;
 }

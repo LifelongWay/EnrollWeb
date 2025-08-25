@@ -88,6 +88,7 @@
 .btn-delete:active {
     transform: translateY(0);
 }
+
 .btn-courses { background-color: #64B5F6; }    /* Light blue */
 .btn-courses:hover { background-color: #42A5F5; }
 
