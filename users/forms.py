@@ -69,7 +69,8 @@ class EnrollSysRegistrationForm(forms.Form):
         user = User(
             first_name = self.cleaned_data['name'],
             last_name = self.cleaned_data['surname'],
-            username = self.cleaned_data['email'].split('@')[0], 
+            username = self.cleaned_data['email'].split('@')[0],
+            email =  self.cleaned_data['email']
         )
         user.set_password(self.cleaned_data['password'])
 

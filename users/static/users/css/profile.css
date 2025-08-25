@@ -1,5 +1,6 @@
 /* Profile container */
 .profile-container {
+    
     max-width: 800px;
     margin: 2rem auto;
     padding: 2rem;
@@ -40,7 +41,7 @@
 .profile-details {
     margin-top: 1.5rem;
     font-size: 1.1rem;
-    text-align: left;
+    text-align: center;
 }
 
 .profile-details p {
