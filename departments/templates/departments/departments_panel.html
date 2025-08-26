@@ -16,27 +16,28 @@
 </div>
 
 <div class="panel-container">
+    
+    {% comment %} --FORM-- {% endcomment %}
     {% if form and not editing_dept_id %}
-    <form class = 'department-card' method = 'post' action = "{% url 'departments:add' %}"/>
-        {% csrf_token %}
-        <h3 class="department-name">
-            {{ form.name }}
-            {% if form.name.errors %}
-                <div class="error-message">
-                    {{ form.name.errors.0 }}
-                </div>
-            {% endif %}
-        </h3>
-        <div class="department-buttons">
-            <a class="btn add-btn" href="{% url 'departments:add' %}">
-                <i class="fas fa-building me-1"></i> Add Department
-            </a>
-        </div>
-    </form>
+        <form class = 'department-card' method = 'post' action = "{% url 'departments:add' %}"/>
+            {% csrf_token %}
+            <h3 class="department-name">
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="error-message">
+                        {{ form.name.errors.0 }}
+                    </div>
+                {% endif %}
+            </h3>
+            <div class="department-buttons">
+                <a class="btn add-btn" href="{% url 'departments:add' %}">
+                    <i class="fas fa-building me-1"></i> Add Department
+                </a>
+            </div>
+        </form>
     {% endif %}
 
-        {% for department in departments %}
-
+    {% for department in departments %}
         {% if department.dept_id == editing_dept_id %}
             <form class = 'department-card' method = 'post' action = "{% url 'departments:edit' dept_id=editing_dept_id%}"/>
                 {% csrf_token %}

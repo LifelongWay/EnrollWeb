@@ -98,79 +98,101 @@
             </form>            
         {% endif %}
 
-        {% comment %} ALL COURSES PANEL {% endcomment %}
-        {% for course in courses %}
+        {% comment %} ALL SECTION PANEL {% endcomment %}
+        <div class="accordion" id="coursesAccordion">
+  {% for course in courses %}
+  <div class="col-12 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="fw-bold">{{ course.name }}</h4>
+        <p class="text-muted">Code: {{ course.pk }}</p>
+
+        <!-- Toggle button -->
+        <button class="btn btn-sm btn-primary" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#course-{{ course.id }}" 
+                aria-expanded="false" 
+                aria-controls="course-{{ course.id }}">
+          View Sections
+        </button>
+
+        <!-- Section list for this course only -->
+        <div id="course-{{ course.id }}" class="collapse mt-3" data-bs-parent="#coursesAccordion">
+          <div class="row">
             {% for section in course.sections.all %}
-            <div class="col-12 col-md-6 col-lg-4">
-                {% if section.pk == edit_section_pk %}
-                    <form enctype='multipart/form-data' class="card h-100 shadow-lg rounded-4"
-                        {% if section.image %}
-                        style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-                                        url('{{ section.image.url }}') no-repeat center center; 
-                                background-size: cover; color: white;"
-                        {% else %}
-                        style="background: linear-gradient(135deg, #607d8b, #455a64); color: #f1f1f1;" 
-                        {% endif %} method = 'post' action = "{% url 'courses:edit' type='section' pk=section.pk %}">
-                        {% csrf_token %}
-                        {{ edit_section_form}}
-
-                        <button class="submit-btn">Submit</button>
-                    </form>
-                {% else %}
-                    <div class="card h-100 shadow-lg rounded-4 course-card"
-                        {% if section.image %}
-                        style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-                                        url('{{ section.image.url }}') no-repeat center center; 
-                                background-size: cover; color: white;"
-                        {% else %}
-                        style="background: linear-gradient(135deg, #607d8b, #455a64); color: #f1f1f1;" 
-                        {% endif %}>
-                        <div class="card-body">
-                            <!-- Course Name -->
-                            <h5 class="card-title fw-bold {% if section.image %}text-white{% else %}text-light{% endif %}">
-                                {{ course.name }}
-                            </h5>
-                            
-                            <!-- Section Badge -->
-                            <p class="card-text mb-3">
-                                {% if section.image %}
-                                <span class="badge rounded-pill bg-warning text-dark fw-bold">
-                                    Section {{ section.section_number }}
-                                </span>
-                                {% else %}
-                                <span class="badge rounded-pill bg-info text-dark fw-bold">
-                                    Section {{ section.section_number }}
-                                </span>
-                                {% endif %}
-                            </p>
-                            
-                            <!-- Teacher Info -->
-                            {% if section.teacher %}
-                            <p class="mb-0 {% if section.image %}text-white{% else %}text-light{% endif %}">
-                                <i class="fas fa-chalkboard-teacher me-2"></i>{{ section.teacher }}
-                            </p>
-                            {% endif %} 
-                        </div>
-
-                        {% if user|has_group:"Registrar" or user|has_group:"Admin" %}
-                        <div class="card-footer {% if section.image %}bg-dark{% else %}bg-secondary{% endif %} d-flex justify-content-between">
-                            <a href="{% url 'courses:edit' type='section' pk=section.pk %}" class="btn btn-sm {% if section.image %}btn-outline-light{% else %}btn-outline-light{% endif %}">
-                                <i class="fas fa-edit me-1"></i>Edit
-                            </a>
-                            <a href="{% url 'courses:delete' type='section' pk=section.pk %}" class="btn btn-sm {% if section.image %}btn-outline-danger{% else %}btn-outline-light{% endif %}">
-                                <i class="fas fa-trash me-1"></i>Delete
-                            </a>
-                        </div>
-                        {% endif %}
-                    </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-3">
+              {% if section.pk == edit_section_pk %}
+              <form enctype='multipart/form-data' class="card h-100 shadow-lg rounded-4"
+                    {% if section.image %}
+                    style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                                   url('{{ section.image.url }}') no-repeat center center; 
+                           background-size: cover; color: white;"
+                    {% else %}
+                    style="background: linear-gradient(135deg, #607d8b, #455a64); color: #f1f1f1;" 
+                    {% endif %} method='post' action="{% url 'courses:edit' type='section' pk=section.pk %}">
+                {% csrf_token %}
+                {{ edit_section_form }}
+                <button class="submit-btn">Submit</button>
+              </form>
+              {% else %}
+              <div class="card h-100 shadow-lg rounded-4 course-card"
+                   {% if section.image %}
+                   style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                                  url('{{ section.image.url }}') no-repeat center center; 
+                          background-size: cover; color: white;"
+                   {% else %}
+                   style="background: linear-gradient(135deg, #607d8b, #455a64); color: #f1f1f1;" 
+                   {% endif %}>
+                <div class="card-body">
+                  <h5 class="card-title fw-bold {% if section.image %}text-white{% else %}text-light{% endif %}">
+                    {{ course.name }}
+                  </h5>
+                  <p class="card-text mb-3">
+                    {% if section.image %}
+                    <span class="badge rounded-pill bg-warning text-dark fw-bold">
+                      Section {{ section.section_number }}
+                    </span>
+                    {% else %}
+                    <span class="badge rounded-pill bg-info text-dark fw-bold">
+                      Section {{ section.section_number }}
+                    </span>
+                    {% endif %}
+                  </p>
+                  {% if section.teacher %}
+                  <p class="mb-0 {% if section.image %}text-white{% else %}text-light{% endif %}">
+                    <i class="fas fa-chalkboard-teacher me-2"></i>{{ section.teacher }}
+                  </p>
+                  {% endif %}
+                </div>
+                {% if user|has_group:"Registrar" or user|has_group:"Admin" %}
+                <div class="card-footer {% if section.image %}bg-dark{% else %}bg-secondary{% endif %} d-flex justify-content-between">
+                  <a href="{% url 'courses:edit' type='section' pk=section.pk %}" 
+                     class="btn btn-sm {% if section.image %}btn-outline-light{% else %}btn-outline-light{% endif %}">
+                    <i class="fas fa-edit me-1"></i>Edit
+                  </a>
+                  <a href="{% url 'courses:delete' type='section' pk=section.pk %}" 
+                     class="btn btn-sm {% if section.image %}btn-outline-danger{% else %}btn-outline-light{% endif %}">
+                    <i class="fas fa-trash me-1"></i>Delete
+                  </a>
+                </div>
                 {% endif %}
+              </div>
+              {% endif %}
             </div>
-        {% endfor %}
-        {% empty %}
-            <div class="col-12">
-                <p class="text-muted text-center fs-5 mt-4">No courses or sections available.</p>
-            </div>
-        {% endfor %}
+            {% empty %}
+            <p class="text-muted">No sections yet for this course.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <p class="text-center text-muted fs-5">No courses available.</p>
+  {% endfor %}
+</div> <!-- accordion wrapper -->
+
     </div>
 </div>
 
