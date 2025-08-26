@@ -83,6 +83,56 @@
     color: #fff; /* or light silver for contrast */
 }
 
-.edit-btn:hover {
+.edit-btn:hover {   
     transform: scale(1.1);
 }
+
+
+
+/* Custom file input for profile/avatar */
+.mb-3 input[type="file"] {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f8f9fa; /* light gray */
+    cursor: pointer;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+
+
+
+ 
+
+.avatar-upload-btn {
+    position: absolute;
+    bottom: 8px; /* small margin from bottom */
+    right: 8px;  /* small margin from right */
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 77, 77, 0.85); /* semi-transparent cherry red */
+    color: #fff;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    backdrop-filter: blur(4px); /* glass effect */
+}
+
+.avatar-upload-btn:hover {
+    background: rgba(255, 77, 77, 1);
+    transform: scale(1.15);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.avatar-upload-btn i {
+    pointer-events: none; /* icon clicks pass to label */
+}
+

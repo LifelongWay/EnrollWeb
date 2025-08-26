@@ -104,7 +104,7 @@ def profile_edit_view(request, user_id):
     context['form'] = form
 
     if request.method == 'POST':
-        form = EnrollSysRegistrationForm(request.POST, user=user_under_edit)
+        form = EnrollSysRegistrationForm(request.POST, request.FILES ,user=user_under_edit)
         context['form'] = form
 
         if form.is_valid():

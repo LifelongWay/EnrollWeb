@@ -14,50 +14,61 @@
         <i class="fas fa-edit me-1" style = "font-size: 2rem;"></i>
     </a>
 
-    <!-- Profile Image -->
-        {% if user_viewed|has_group:'Student' and user_viewed.student.profile_img %}
-            <img class="profile-img" src="{{ user_viewed.student.profile_img.url }}" alt="{{ user_viewed }}">
-        {% elif user_viewed|has_group:'Teacher' and user_viewed.teacher.profile_img %}
-            <img class="profile-img" src="{{ user_viewed.teacher.profile_img.url }}" alt="{{ user_viewed }}">
-        {% elif user_viewed|has_group:'Registrar' and user_viewed.registrar.profile_img %}
-            <img class="profile-img" src="{{ user_viewed.registrar.profile_img.url }}" alt="{{ user_viewed }}">
-        {% else %}
-            <img class="profile-img" src="{{ MEDIA_URL }}users/profile_imgs/default.png">
-        {% endif %}
-
-
-    <!-- Name -->
-    <div class="user-name">{{ user_viewed }}</div>
-
-    <!-- Role Badge -->
-   <div class="role-badge badge rounded-pill text-dark ms-2 small 
-        {% if user_viewed|has_group:'Student' %}role-student
-        {% elif user_viewed|has_group:'Teacher' %}role-teacher
-        {% elif user_viewed|has_group:'Registrar' %}role-registrar
-        {% elif user_viewed.is_superuser %}role-superuser
-        {% else %}role-default
-        {% endif %}">
-        
-        {% if user_viewed|has_group:'Student' %}
-            <i class="fas fa-user-graduate"></i> Student
-        {% elif user_viewed|has_group:'Teacher' %}
-            <i class="fas fa-chalkboard-teacher"></i> Teacher
-        {% elif user_viewed|has_group:'Registrar' %}
-            <i class="fas fa-user-shield"></i> Registrar
-        {% elif user_viewed.is_superuser %}
-            <i class="fas fa-user-shield me-1"></i> Admin
-        {% else %}
-            <i class="fas fa-user"></i> User
-        {% endif %}
-    </div>
-
+    
 
     <!-- Extra Details -->
 
     {% if form %}
-        <form class="profile-details" method = 'post' action = "{% url 'users:profile-edit' user_id=user_viewed.pk %}">
+        <form class="profile-details" enctype="multipart/form-data" method = 'post' action = "{% url 'users:profile-edit' user_id=user_viewed.pk %}">
             {% csrf_token %}
-            {% comment %} Common fields {% endcomment %}
+
+            {% comment %} Profile Image {% endcomment %}
+            <div class="position-relative d-inline-block">
+                {% if user_viewed|has_group:'Student' %}
+                    <img class="profile-img" src="{{ user_viewed.student.profile_img.url }}" alt="{{ user_viewed }}" />
+                {% elif user_viewed|has_group:'Teacher' and user_viewed.teacher.profile_img %}
+                    <img class="profile-img" src="{{ user_viewed.teacher.profile_img.url }}" alt="{{ user_viewed }}" />
+                {% elif user_viewed|has_group:'Registrar' and user_viewed.registrar.profile_img %}
+                    <img class="profile-img" src="{{ user_viewed.registrar.profile_img.url }}" alt="{{ user_viewed }}" />
+                {% else %}
+                    <img class="profile-img" src="{{ MEDIA_URL }}users/profile_imgs/default.png" alt="Default Avatar" />
+                {% endif %}
+
+                {% comment %} Browse File-Img Input {% endcomment %}
+                <!-- Camera icon overlay -->
+                <label for="{{ form.profile_img.id_for_label }}" class="avatar-upload-btn">
+                    <i class="fas fa-camera"></i>
+                </label>
+                {{ form.profile_img }}
+                
+            </div>
+
+            <!-- Name -->
+            <div class="user-name">{{ user_viewed }}</div>
+
+            <!-- Role Badge -->
+            <div class="role-badge badge rounded-pill text-dark ms-2 small 
+                {% if user_viewed|has_group:'Student' %}role-student
+                {% elif user_viewed|has_group:'Teacher' %}role-teacher
+                {% elif user_viewed|has_group:'Registrar' %}role-registrar
+                {% elif user_viewed.is_superuser %}role-superuser
+                {% else %}role-default
+                {% endif %}">
+                
+                {% if user_viewed|has_group:'Student' %}
+                    <i class="fas fa-user-graduate"></i> Student
+                {% elif user_viewed|has_group:'Teacher' %}
+                    <i class="fas fa-chalkboard-teacher"></i> Teacher
+                {% elif user_viewed|has_group:'Registrar' %}
+                    <i class="fas fa-user-shield"></i> Registrar
+                {% elif user_viewed.is_superuser %}
+                    <i class="fas fa-user-shield me-1"></i> Admin
+                {% else %}
+                    <i class="fas fa-user"></i> User
+                {% endif %}
+            </div>
+            
+            {% comment %} Profile Details {% endcomment %}
             <p><strong>Username:</strong> {{ user_viewed }}</p>
             <p><strong>Name:</strong> {{ form.name }}</p>
             <p><strong>Surname:</strong> {{ form.surname }}</p>
@@ -76,6 +87,45 @@
             <button>Apply Changes</button>
         </form>
     {% else %}
+        <div class="position-relative d-inline-block">
+            {% if user_viewed|has_group:'Student' %}
+                <img class="profile-img" src="{{ user_viewed.student.profile_img.url }}" alt="{{ user_viewed }}" />
+            {% elif user_viewed|has_group:'Teacher' and user_viewed.teacher.profile_img %}
+                <img class="profile-img" src="{{ user_viewed.teacher.profile_img.url }}" alt="{{ user_viewed }}" />
+            {% elif user_viewed|has_group:'Registrar' and user_viewed.registrar.profile_img %}
+                <img class="profile-img" src="{{ user_viewed.registrar.profile_img.url }}" alt="{{ user_viewed }}" />
+            {% else %}
+                <img class="profile-img" src="{{ MEDIA_URL }}users/profile_imgs/default.png" alt="Default Avatar" />
+            {% endif %}
+        </div>
+        
+        <!-- Name -->
+        <div class="user-name">{{ user_viewed }}</div>
+
+        <!-- Role Badge -->
+        <div class="role-badge badge rounded-pill text-dark ms-2 small 
+            {% if user_viewed|has_group:'Student' %}role-student
+            {% elif user_viewed|has_group:'Teacher' %}role-teacher
+            {% elif user_viewed|has_group:'Registrar' %}role-registrar
+            {% elif user_viewed.is_superuser %}role-superuser
+            {% else %}role-default
+            {% endif %}">
+            
+            {% if user_viewed|has_group:'Student' %}
+                <i class="fas fa-user-graduate"></i> Student
+            {% elif user_viewed|has_group:'Teacher' %}
+                <i class="fas fa-chalkboard-teacher"></i> Teacher
+            {% elif user_viewed|has_group:'Registrar' %}
+                <i class="fas fa-user-shield"></i> Registrar
+            {% elif user_viewed.is_superuser %}
+                <i class="fas fa-user-shield me-1"></i> Admin
+            {% else %}
+                <i class="fas fa-user"></i> User
+            {% endif %}
+        </div>
+
+
+    
         <div class="profile-details ">
             {% comment %} Common fields {% endcomment %}
             <p><strong>Username:</strong> {{ user_viewed }}</p>

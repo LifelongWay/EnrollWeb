@@ -3,10 +3,15 @@ from django.contrib.auth.models import User
 from django import forms
 
 from departments.models import Department
+from .models import Teacher, Student, Registrar
 
 
-from .models import Teacher, Student
 class EnrollSysRegistrationForm(forms.Form):
+    profile_img = forms.ImageField(
+        required=False,
+        label='Avatar',
+        widget= forms.FileInput(attrs={'style': 'display: none;'})
+    )
     name = forms.CharField(
         required = False, 
         label = 'First Name',
@@ -62,13 +67,17 @@ class EnrollSysRegistrationForm(forms.Form):
             self.user_instance = user 
 
             if hasattr(user, 'student'):
-                self.fields['role'].initial = 'student'
+                self.role = 'student'
                 self.fields['department'].initial = user.student.department
+                self.fields['profile_img'].initial = user.student.profile_img
                 print('Editing Student')
             elif hasattr(user, 'teacher'):
-                self.fields['role'].initial = 'teacher'
+                self.role = 'teacher'
                 self.fields['department'].initial = user.teacher.department
+                self.fields['profile_img'].initial = user.teacher.profile_img
                 print('Editing Teacher')
+            elif hasattr(user, 'registrar'):
+                self.role = 'registrar'
 
             self.fields['name'].initial = user.first_name
             self.fields['surname'].initial = user.last_name
@@ -90,14 +99,14 @@ class EnrollSysRegistrationForm(forms.Form):
     def save(self, commit=True, user=None):
         if user is None:  # New user
             user = User(
-                username=self.cleaned_data['email'].split('@')[0]
+                username=self.cleaned_data['email']
             )
 
         # Update attributes
         user.first_name = self.cleaned_data['name']
         user.last_name = self.cleaned_data['surname']
         user.email = self.cleaned_data['email']
-
+        
         if self.cleaned_data['password']:
             user.set_password(self.cleaned_data['password'])
 
@@ -106,28 +115,36 @@ class EnrollSysRegistrationForm(forms.Form):
         # ------------------
         if commit:
             user.save()
-
-            # ------------------
-            # Create/update role objects only if commit=True
-            # ------------------
             role = self.cleaned_data['role']
-
+            if not role and hasattr(self, 'role'): role = self.role
             if role == 'student':
                 student, created = Student.objects.get_or_create(
                     user=user,
                     defaults= {'gpa': 0.0, 'department': self.cleaned_data['department']}
                 )
-                if created:
-                    student.gpa = 0.0   
+                if self.cleaned_data['profile_img']: student.profile_img = self.cleaned_data['profile_img']
+                
+                print('hereee')
+                print(self.cleaned_data['profile_img'])
                 student.save()
 
             elif role == 'teacher':
                 teacher, created = Teacher.objects.get_or_create(
                     user=user,
-                    defaults = {'department': self.cleaned_data['department']}
+                    defaults = {
+                        'department': self.cleaned_data['department'],
+                    }
                 )
+                if self.cleaned_data['profile_img']: teacher.profile_img = self.cleaned_data['profile_img']
+                
                 teacher.save()
-
+            elif role == 'registrar':
+                print(' at registrar!, cl: ', self.cleaned_data['profile_img'])
+                registrar, _ = Registrar.objects.get_or_create(
+                    user = user,
+                )
+                if self.cleaned_data['profile_img']: registrar.profile_img = self.cleaned_data['profile_img']
+                registrar.save()
         return user
 
         
