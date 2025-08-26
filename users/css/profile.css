@@ -1,5 +1,6 @@
 /* Profile container */
 .profile-container {
+    
     max-width: 800px;
     margin: 2rem auto;
     padding: 2rem;
@@ -27,7 +28,7 @@
     gap: 0.4rem;
     padding: 0.4rem 0.8rem;
     border-radius: 20px;
-    font-size: 1rem;
+    font-size: 1.3rem;
 }
 
 /* Minimal role colors using root variables */
@@ -36,11 +37,23 @@
 .role-registrar { background-color: var(--warning-color); color: #000; }
 .role-default { background-color: var(--dark-color); color: #fff; }
 
+.role-superuser {
+    background: linear-gradient(135deg, #e63946, #b71c1c); /* cherry red gradient */
+    color: #f8f9fa; /* light grey/white text for contrast */
+    font-weight: 600; 
+  
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3); /* subtle black shadow for depth */
+}
+.role-superuser i {
+    color: #fff; /* icon white to match text */
+}
+
+
 /* Profile details spacing */
 .profile-details {
     margin-top: 1.5rem;
     font-size: 1.1rem;
-    text-align: left;
+    text-align: center;
 }
 
 .profile-details p {
@@ -51,5 +64,75 @@
 @media (max-width: 768px) {
     .profile-container { padding: 1.5rem; }
     .profile-details { font-size: 1rem; }
+}
+
+
+.edit-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    
+    color: linear-gradient(145deg, #ffffff, #c0c0c0); /* white-silver gradient */
+    
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.edit-btn i {
+    font-size: 0.9rem;
+    color: #fff; /* or light silver for contrast */
+}
+
+.edit-btn:hover {   
+    transform: scale(1.1);
+}
+
+
+
+/* Custom file input for profile/avatar */
+.mb-3 input[type="file"] {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f8f9fa; /* light gray */
+    cursor: pointer;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+
+
+
+ 
+
+.avatar-upload-btn {
+    position: absolute;
+    bottom: 8px; /* small margin from bottom */
+    right: 8px;  /* small margin from right */
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 77, 77, 0.85); /* semi-transparent cherry red */
+    color: #fff;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    backdrop-filter: blur(4px); /* glass effect */
+}
+
+.avatar-upload-btn:hover {
+    background: rgba(255, 77, 77, 1);
+    transform: scale(1.15);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.avatar-upload-btn i {
+    pointer-events: none; /* icon clicks pass to label */
 }
 

@@ -129,7 +129,7 @@
 }
 
 /* Submit button */
-.course_form .submit-btn, .section_form .submit-btn {
+.course_form .submit-btn {
     display: inline-block;
     width: 100%;
     padding: 12px 0;
@@ -152,12 +152,7 @@
     transform: translateY(1px);
 }
 
-/* Section Form styles */
-.section_form {
-    display: flex;
-    flex-direction: column;
-    width: 600px;
-}
+ 
 
 
 /* Custom select styling */
@@ -196,4 +191,120 @@
     transform: translateY(-50%);
     pointer-events: none;
     color: #555;
+}
+
+
+/* ===== Section Form (Courses > Add Section) ===== */
+.section_form {
+  /* Card look */
+  --surface: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --ring: #3b82f6;
+  --border: #e5e7eb;
+  --accent: #4f46e5;
+
+  display: grid;
+  grid-template-columns: 220px minmax(260px, 520px);
+  gap: 12px 18px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.06),
+    0 8px 24px rgba(0,0,0,.06);
+}
+
+/* Hide CSRF hidden input so it doesn't break the grid pairing */
+/* ===== Section Form (Harmonized with Section Cards) ===== */
+.section_form {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  border-radius: 1rem; /* match card rounding */
+  background: linear-gradient(135deg, #f8fafc, #e9eff5); /* soft gradient */
+  color: #1f2937;
+  padding: 20px 24px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 12px 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section_form:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+/* Labels */
+.section_form label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #374151;
+  align-self: center;
+}
+
+/* Inputs */
+.section_form input,
+.section_form select,
+.section_form textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  font-size: 0.9rem;
+  color: #111827;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.section_form input:focus,
+.section_form select:focus,
+.section_form textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
+  outline: none;
+  background: #fff;
+}
+
+/* File input */
+.section_form input[type="file"] {
+  padding: 6px;
+}
+
+/* Submit button */
+.section_form .submit-btn {
+  grid-column: 1 / -1;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #4f46e5, #2563eb); /* echo accent */
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 16px rgba(79,70,229,0.25);
+}
+.section_form .submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(79,70,229,0.3);
+}
+.section_form .submit-btn:active {
+  transform: translateY(1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section_form {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .section_form label {
+    margin-top: 6px;
+  }
 }

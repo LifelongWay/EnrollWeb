@@ -1,13 +1,7 @@
-/* Container grid */
-.profile-container {
-    display: grid;
-    gap: 0.5rem;           /* spacing between cards */
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    /* auto-fill: fills as many columns as fit; minmax ensures cards are at least 200px wide */
-}
 
 /* Profile card */
 .profile-card {
+    position: relative; /* needed for absolute positioning of edit button */
     display: flex;
     align-items: center;
     padding: 0.4rem 0.6rem;
@@ -61,17 +55,7 @@
     color: #555;
     margin: 0;
 }
-.profile-card {
-    position: relative; /* needed for absolute positioning of edit button */
-    display: flex;
-    align-items: center;
-    padding: 0.4rem 0.6rem;
-    border-radius: 0.4rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    background-color: #fff;
-    transition: background-color 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-}.edit-btn {
+.edit-btn {
     position: absolute;
     top: 0.4rem;
     right: 0.4rem;
@@ -142,3 +126,86 @@
 }
 
 
+/* ADD USER FORM for Registrar */
+
+/* Page wrapper */
+.panel-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Panel header */
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+/* Layout: form + profiles side by side */
+.panel-content {
+    display: grid;
+    grid-template-columns: 350px 1fr; /* form left, list right */
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+/* Add user form card */
+.user-add-form-container {
+    background: #f9fbff;
+    border: 1px solid #d6e4f5;
+    box-shadow: 1px 1px 10px grey;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.user-add-form-container h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #e0ebff;
+    padding-bottom: 0.5rem;
+}
+
+.user-add-form label {
+    font-weight: 500;
+    color: #141010;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.user-add-form input,
+.user-add-form select,
+.user-add-form textarea {
+    width: 100%;
+    border: 1px solid #635a5a;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+}
+
+.user-add-form button {
+    width: 100%;
+    background: linear-gradient(135deg, #0d6efd, #0056b3);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.user-add-form button:hover {
+    background: linear-gradient(135deg, #0056b3, #003f88);
+}
+
+/* Profile grid on the right */
+.profile-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
