@@ -5,7 +5,7 @@ app_name = 'users'
 
 urlpatterns = [
     path('user/auth/login/', views.login_view, name = "login"),
-    path('user/auth/register/', views.register, name = 'register'),
+    # path('user/auth/register/', views.register, name = 'register'), -- no need no more :>
     path('user/auth/logout/', views.logout_view, name = 'logout'),
     path('users/panel/<str:role>/', views.roles_view, name = 'panel'),
     path('users/add/<str:role>/', views.account_add_view, name = 'add'),
