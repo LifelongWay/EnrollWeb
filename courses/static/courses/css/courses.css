@@ -158,3 +158,42 @@
     flex-direction: column;
     width: 600px;
 }
+
+
+/* Custom select styling */
+.custom-select {
+    appearance: none; /* remove default styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 6px 30px 6px 12px; /* space for arrow */
+    font-size: 0.9rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+/* Arrow icon */
+.custom-select::-ms-expand {
+    display: none; /* remove default IE arrow */
+}
+
+.custom-select::after {
+    content: '▾'; /* simple arrow */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #555;
+}

@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from .models import Course, Section
 from .forms import CourseForm, SectionForm
+
+from departments.models import Department
 # Create your views here.
 
 
@@ -8,6 +10,12 @@ def courses_and_sections_view(request, type=None):
     # courses are always in context
     context = {}
     context['courses'] = Course.objects.all()
+    context['departments'] = Department.objects.all()
+
+    chosen_department = request.GET.get('department')
+    if chosen_department != '' and chosen_department:
+        context['courses'] = Course.objects.all().filter(department = chosen_department)
+        context['selected_department'] = int(chosen_department)
 
     if request.method == 'POST':
         # get submitted form

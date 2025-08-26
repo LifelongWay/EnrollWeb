@@ -9,24 +9,31 @@
 {% block more_navigation %}
 <div class="container my-5">
     <div class="panel-header d-flex align-items-center mb-4">
-        <h1>Courses & Sections</h2>
-        <div class="d-flex ms-auto gap-2">
-            {% if user|has_group:"Registrar" or user|has_group:"Admin" %}
-                <a href="{% url 'courses:add' type='section' %}" class="add-btn">
-                    <i class="fas fa-plus me-2"></i>
-                    Arrange Section
-                </a>
-                
-                <a href = "{% url 'courses:add' type='course' %}" class="add-btn">
-                    <i class="fas fa-plus me-2"></i>
-                    Add Course
-                </a>
+    <h1>Courses & Sections</h1>
 
-            {% endif %}
-        </div>
-        
+    <!-- Department Filter -->
+    <form method="get" class="d-flex ms-auto align-items-center gap-2">
+        <label for="department" class="mb-0">Department:</label>
+        <select name="department" id="department" class="custom-select" onchange = "this.form.submit()">
+            <option value="">All</option>
+            {% for dept in departments %}
+                <option value="{{ dept.dept_id }}" {% if dept.dept_id == selected_department %}selected{% endif %}>
+                    {{ dept.name }}
+                </option>
+            {% endfor %}
+        </select>
 
-    </div>
+        {% if user|has_group:"Registrar" or user|has_group:"Admin" %}
+            <a href="{% url 'courses:add' type='section' %}" class="add-btn">
+                <i class="fas fa-plus me-2"></i>Arrange Section
+            </a>
+            <a href="{% url 'courses:add' type='course' %}" class="add-btn">
+                <i class="fas fa-plus me-2"></i>Add Course
+            </a>
+        {% endif %}
+    </form>
+</div>
+
 
     <div class="row g-4">
 
