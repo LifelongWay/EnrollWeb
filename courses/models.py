@@ -30,7 +30,7 @@ class Course(models.Model):
 
 class Section(models.Model):
     # relationship "teaches"
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='classes', null = False, blank = False)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='sections', null = False, blank = False)
     image = models.ImageField(upload_to='course_images/', blank = True, null = True)
 
     SEMESTER_CHOICES = [
@@ -54,7 +54,10 @@ class Section(models.Model):
         unique_together = ('course', 'section_number', 'year', 'semester')
     
     def __str__(self):
-        return f'{self.course.name}.{self.section_number}'
+        if self.section_number < 10:
+            return f'{self.course}.0{self.section_number}'
+        
+        return f'{self.course}.{self.section_bumber}'
 class Enrollment(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, blank = False, null = False)
     section = models.ForeignKey(Section, on_delete=models.CASCADE, blank = False, null = False)

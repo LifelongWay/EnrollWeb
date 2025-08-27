@@ -38,8 +38,7 @@
                             <i class="fas fa-user-graduate fa-2x mb-2"></i>
                             <h5 class="card-title">Students</h5>
                             <p class="card-text text-muted small">
-                                Browse, filter, and manage student accounts. Track enrollment history.
-                            </p>
+                            Browse available courses and manage your course registrations for the current semester.                            </p>
                         </div>
                     </div>
                 </a>
@@ -108,7 +107,7 @@
 
             <!-- My Sections -->
             <div class="col-md-3 col-6">
-                <a href="{% url 'home' %}" class="text-decoration-none">
+                <a href="{% url 'courses:my-sections' %}" class="text-decoration-none">
                     <div class="card h-100 shadow-sm">
                         <div class="card-body text-center">
                             <i class="fas fa-book-open fa-2x mb-2"></i>
@@ -129,7 +128,7 @@
                             <i class="fas fa-envelope fa-2x mb-2"></i>
                             <h5 class="card-title">Messages</h5>
                             <p class="card-text text-muted small">
-                                Read announcements from advisors, teachers, and system notifications.
+                                Read announcements from students, other teachers, and system notifications.
                             </p>
                         </div>
                     </div>
@@ -154,13 +153,13 @@
                     </a>
                 </div>
 
-                <!-- My Courses -->
+                <!-- My Sections -->
                 <div class="col-md-3 col-6">
-                    <a href="{% url 'home' %}" class="text-decoration-none">
+                    <a href="{% url 'courses:my-sections' %}" class="text-decoration-none">
                         <div class="card h-100 shadow-sm">
                             <div class="card-body text-center">
                                 <i class="fas fa-book-open fa-2x mb-2"></i>
-                                <h5 class="card-title">My Courses</h5>
+                                <h5 class="card-title">My Sections</h5>
                                 <p class="card-text text-muted small">
                                     View and manage the courses you are enrolled in.
                                 </p>
@@ -169,15 +168,16 @@
                     </a>
                 </div>
 
-                <!-- Available Courses -->
+    
+                <!-- Enrollment -->
                 <div class="col-md-3 col-6">
                     <a href="{% url 'home' %}" class="text-decoration-none">
                         <div class="card h-100 shadow-sm">
                             <div class="card-body text-center">
-                                <i class="fas fa-search fa-2x mb-2"></i>
-                                <h5 class="card-title">Available Courses</h5>
+                                <i class="fas fa-book fa-2x mb-2"></i>
+                                <h5 class="card-title">Enrollment</h5>
                                 <p class="card-text text-muted small">
-                                    Browse and register for available courses this semester.
+                                    Browse courses and manage your enrollments for this semester.
                                 </p>
                             </div>
                         </div>
@@ -208,6 +208,20 @@
                                 <h5 class="card-title">Advisor</h5>
                                 <p class="card-text text-muted small">
                                     Connect with your academic advisor for guidance and support.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- Messages -->
+                <div class="col-md-3 col-6">
+                    <a href="{% url 'home' %}" class="text-decoration-none">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-envelope fa-2x mb-2"></i>
+                                <h5 class="card-title">Messages</h5>
+                                <p class="card-text text-muted small">
+                                    Read announcements from advisors, teachers, and system notifications.
                                 </p>
                             </div>
                         </div>

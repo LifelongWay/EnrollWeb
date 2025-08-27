@@ -148,8 +148,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'courses:my-sections' %}">
+                        <i class="fas fa-book-open me-1"></i> My Sections
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-white" href="{% url 'home' %}">
-                        <i class="fas fa-search me-1"></i> Available Courses
+                        <i class="fas fa-book me-1"></i> Enrollment
                     </a>
                 </li>
                 <li class="nav-item">
@@ -176,7 +181,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url 'home' %}">
+                    <a class="nav-link text-white" href="{% url 'courses:my-sections' %}">
                         <i class="fas fa-book-open me-1"></i> My Sections
                     </a>
                 </li>

@@ -77,3 +77,28 @@ def courses_and_sections_delete_view(request, type, pk):
     # delete
     instance_to_delete.delete() 
     return redirect('courses:panel')
+
+
+# For Teachers and Students
+
+def my_sections_view(request):
+    
+    # get sections based on user's role
+    user = request.user
+    sections = {}
+    if hasattr(user, 'student'):
+        sections = user.student.sections.all()
+    elif hasattr(user, 'teacher'):
+        sections = user.teacher.sections.all()
+    # else {} -- already initialized
+
+    
+    # build context
+    # context
+    context = {
+        'sections': sections
+    }
+
+
+    return render(request, 'courses/my_sections.html', context)
+
