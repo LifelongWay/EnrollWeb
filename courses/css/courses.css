@@ -4,6 +4,7 @@
 
 /* ================= CARD ================= */
 .course-card {
+    width: 0px !important;
     position: relative;
     overflow: hidden;
     border: none;
@@ -11,7 +12,8 @@
     background: #2e7d32; /* default green for cards without images */
     color: #fff;
     transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
-}
+
+  }
 
 .course-card::before {
     content: "";
@@ -362,4 +364,13 @@
   .section_form label {
     margin-top: 8px;
   }
+}
+
+/* ================= COURSE ROW CARD ================= */
+.sections-container {
+    display: flex;        /* enable flex layout */
+    flex-wrap: wrap;      /* allow wrapping to multiple rows */
+    gap: 1.5rem;          /* space between cards */
+    justify-content: flex-start; /* align cards to the left */
+    margin-bottom: 2rem;  /* optional spacing after the row */
 }
