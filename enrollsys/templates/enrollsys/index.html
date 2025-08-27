@@ -89,6 +89,131 @@
                     </div>
                 </a>
             </div>
+        {% elif user|has_group:"Teacher"%}
+        <div class="row g-3">
+            <!-- Home -->
+            <div class="col-md-3 col-6">
+                <a href="{% url 'home' %}" class="text-decoration-none">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-home fa-2x mb-2"></i>
+                            <h5 class="card-title">Home</h5>
+                            <p class="card-text text-muted small">
+                                Go to your dashboard and access the main system features.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- My Sections -->
+            <div class="col-md-3 col-6">
+                <a href="{% url 'home' %}" class="text-decoration-none">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-book-open fa-2x mb-2"></i>
+                            <h5 class="card-title">My Sections</h5>
+                            <p class="card-text text-muted small">
+                                View and manage the sections you belong to. Check schedules and details.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Messages -->
+            <div class="col-md-3 col-6">
+                <a href="{% url 'home' %}" class="text-decoration-none">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-envelope fa-2x mb-2"></i>
+                            <h5 class="card-title">Messages</h5>
+                            <p class="card-text text-muted small">
+                                Read announcements from advisors, teachers, and system notifications.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        {% elif user|has_group:"Student" %}
+            <div class="row g-3">
+                <!-- Home -->
+                <div class="col-md-3 col-6">
+                    <a href="{% url 'home' %}" class="text-decoration-none">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-home fa-2x mb-2"></i>
+                                <h5 class="card-title">Home</h5>
+                                <p class="card-text text-muted small">
+                                    Go back to your dashboard overview and quick links.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- My Courses -->
+                <div class="col-md-3 col-6">
+                    <a href="{% url 'home' %}" class="text-decoration-none">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-book-open fa-2x mb-2"></i>
+                                <h5 class="card-title">My Courses</h5>
+                                <p class="card-text text-muted small">
+                                    View and manage the courses you are enrolled in.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Available Courses -->
+                <div class="col-md-3 col-6">
+                    <a href="{% url 'home' %}" class="text-decoration-none">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-search fa-2x mb-2"></i>
+                                <h5 class="card-title">Available Courses</h5>
+                                <p class="card-text text-muted small">
+                                    Browse and register for available courses this semester.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Grades -->
+                <div class="col-md-3 col-6">
+                    <a href="{% url 'home' %}" class="text-decoration-none">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-graduation-cap fa-2x mb-2"></i>
+                                <h5 class="card-title">Grades</h5>
+                                <p class="card-text text-muted small">
+                                    Check your academic performance and grade history.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Advisor -->
+                <div class="col-md-3 col-6">
+                    <a href="{% url 'home' %}" class="text-decoration-none">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-chalkboard-teacher fa-2x mb-2"></i>
+                                <h5 class="card-title">Advisor</h5>
+                                <p class="card-text text-muted small">
+                                    Connect with your academic advisor for guidance and support.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         {% endif %}
 
 
