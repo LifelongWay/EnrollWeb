@@ -9,7 +9,7 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'enrollsys/css/enrollsys.css' %}">
 <!-- Quick Navigation Cards -->
-<div class="container quick-nav mt-4 mb-5">
+<div class="container quick-nav mt-5 mb-5">
     <div class="row g-4">
 
         {% comment %}           Registrar             {% endcomment %}
@@ -228,7 +228,39 @@
                     </a>
                 </div>
             </div>
-        {% endif %}
+        {% elif not user.is_authenticated %}
+<!-- Dark Blueprint Hero Banner -->
+<div class="blueprint-hero blueprint-welcome">
+    <div class="blueprint-content">
+        <div class="blueprint-icon">🏛️</div>
+        <h1>Welcome to EnrollSys</h1>
+        <p class="blueprint-text">
+            Manage your courses, enrollments, and academic information in one place.
+        </p>
+        <p class="blueprint-subtext">
+            Please <a href="{% url 'users:login' %}" class="blueprint-link">log in</a> to continue. New users should contact the Registrar Office to create an account.
+        </p>
+        <a href="{% url 'users:login' %}" class="blueprint-btn">Log In</a>
+    </div>
+</div>
+
+{% else %}
+<!-- Dark Blueprint Edge Case Banner -->
+<div class="blueprint-hero blueprint-warning">
+    <div class="blueprint-content">
+        <div class="blueprint-icon">⚠️</div>
+        <h1>Access Issue Detected</h1>
+        <p class="blueprint-text">
+            Your account does not belong to any recognized group in the system.
+        </p>
+        <p class="blueprint-subtext">
+            Please communicate directly with the <strong>Registrar Office</strong> to resolve access issues.
+        </p>
+        <a href="mailto:registrar@university.edu" class="blueprint-btn">Contact Registrar</a>
+    </div>
+</div>
+{% endif %}
+
 
 
     </div>
