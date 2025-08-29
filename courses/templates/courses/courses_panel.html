@@ -111,15 +111,52 @@
             <div class="sections-grid">
                 
                 {% for section in course.sections.all %}
-                    
                     {% if section.pk == edit_section_pk %}
                         <!-- Edit Section Form -->
-                        <form class="card section-card edit-card"
-                              method="post" enctype="multipart/form-data"
-                              action="{% url 'courses:edit' type='section' pk=section.pk %}">
+                        <form method = 'post' enctype="multipart/form-data" action = "{% url 'courses:edit' type='section' pk=section.pk %}"
+                            class="section-form card section-card"
+                            {% if section.image %}
+                                style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                                url('{{ section.image.url }}') no-repeat center center;
+                                background-size: cover; color: white; width: 30%;"
+                            {% else %}
+                            style="background: linear-gradient(135deg, #607d8b, #455a64); color: #f1f1f1;"
+                            {% endif %}>
+                            
                             {% csrf_token %}
-                            {{ edit_section_form }}
-                            <button class="submit-btn">Submit</button>
+
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <span style="display: inline-flex; align-items: center; flex-direction: row;" 
+                                        class="badge rounded-pill {% if section.image %}bg-warning text-dark{% else %}bg-info text-dark{% endif %} fw-bold">
+                                        Section {{ edit_section_form.section_number }}
+                                    </span>
+                                </h4>
+
+                                <p class="mb-0">
+                                    <i class="fas fa-chalkboard-teacher me-2"></i>
+                                    {{ edit_section_form.teacher }}
+                                </p>
+
+                                <p class="mb-0">
+                                    <i class="fas fa-users me-2"></i>
+                                    Capacity: {{ edit_section_form.capacity }}
+                                </p>
+
+                                <p class="mb-0">
+                                    <i class="fas fa-calendar-alt me-2"></i>
+                                    {{ edit_section_form.year }} / {{ edit_section_form.semester }}
+                                </p>
+                                <p class="mb-0 image-input-container">
+                                    <label for="id_image" class="custom-file-label">
+                                        <i class="fas fa-image"></i> Upload Image
+                                    </label>
+                                    {{ edit_section_form.image }}
+                                </p>
+
+                            </div>
+                            
+                            <button>submit</button>
                         </form>
                     
                     {% else %}

@@ -89,6 +89,21 @@
                     </div>
                 </a>
             </div>
+
+            <div class="col-md-3 col-6">
+                <a href="{% url 'home' %}" class="text-decoration-none">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-envelope fa-2x mb-2"></i>
+                            <h5 class="card-title">Messages</h5>
+                            <p class="card-text text-muted small">
+                                Manage announcements and messages for students, teachers, and registrar staff from one place.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
         {% elif user|has_group:"Teacher"%}
         <div class="row g-3">
             <!-- Home -->
@@ -230,37 +245,37 @@
                 </div>
             </div>
         {% elif not user.is_authenticated %}
-<!-- Dark Blueprint Hero Banner -->
-<div class="blueprint-hero blueprint-welcome">
-    <div class="blueprint-content">
-        <div class="blueprint-icon">🏛️</div>
-        <h1>Welcome to EnrollSys</h1>
-        <p class="blueprint-text">
-            Manage your courses, enrollments, and academic information in one place.
-        </p>
-        <p class="blueprint-subtext">
-            Please <a href="{% url 'users:login' %}" class="blueprint-link">log in</a> to continue. New users should contact the Registrar Office to create an account.
-        </p>
-        <a href="{% url 'users:login' %}" class="blueprint-btn">Log In</a>
-    </div>
-</div>
+            <!-- Dark Blueprint Hero Banner -->
+            <div class="blueprint-hero blueprint-welcome">
+                <div class="blueprint-content">
+                    <div class="blueprint-icon">🏛️</div>
+                    <h1>Welcome to EnrollSys</h1>
+                    <p class="blueprint-text">
+                        Manage your courses, enrollments, and academic information in one place.
+                    </p>
+                    <p class="blueprint-subtext">
+                        Please <a href="{% url 'users:login' %}" class="blueprint-link">log in</a> to continue. New users should contact the Registrar Office to create an account.
+                    </p>
+                    <a href="{% url 'users:login' %}" class="blueprint-btn">Log In</a>
+                </div>
+            </div>
 
-{% else %}
-<!-- Dark Blueprint Edge Case Banner -->
-<div class="blueprint-hero blueprint-warning">
-    <div class="blueprint-content">
-        <div class="blueprint-icon">⚠️</div>
-        <h1>Access Issue Detected</h1>
-        <p class="blueprint-text">
-            Your account does not belong to any recognized group in the system.
-        </p>
-        <p class="blueprint-subtext">
-            Please communicate directly with the <strong>Registrar Office</strong> to resolve access issues.
-        </p>
-        <a href="mailto:registrar@university.edu" class="blueprint-btn">Contact Registrar</a>
-    </div>
-</div>
-{% endif %}
+            {% else %}
+            <!-- Dark Blueprint Edge Case Banner -->
+            <div class="blueprint-hero blueprint-warning">
+                <div class="blueprint-content">
+                    <div class="blueprint-icon">⚠️</div>
+                    <h1>Access Issue Detected</h1>
+                    <p class="blueprint-text">
+                        Your account does not belong to any recognized group in the system.
+                    </p>
+                    <p class="blueprint-subtext">
+                        Please communicate directly with the <strong>Registrar Office</strong> to resolve access issues.
+                    </p>
+                    <a href="mailto:registrar@university.edu" class="blueprint-btn">Contact Registrar</a>
+                </div>
+            </div>
+        {% endif %}
 
 
 

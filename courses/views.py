@@ -80,6 +80,12 @@ def courses_and_sections_edit_view(request, type, pk):
             section_form = SectionForm(instance=old_section)
             context['edit_section_pk'] = pk
             context['edit_section_form'] = section_form
+            context['courses'] = context['courses'].annotate(
+                first=Case(
+                    When(pk=old_section.course.pk, then=0),
+                    default=1
+                )
+            ).order_by('first')
     return render(request, 'courses/courses_panel.html' ,context)
 
 def courses_and_sections_delete_view(request, type, pk):
