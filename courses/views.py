@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import Course, Section
 from .forms import CourseForm, SectionForm
-from django.db.models import Case, When
+from django.db.models import Case, When, Q
 
 from departments.models import Department
 # Create your views here.
@@ -59,7 +59,18 @@ def courses_and_sections_view(request, course_name = None, course_id = None, typ
 def courses_and_sections_edit_view(request, type, pk):
     context = {}
     context['courses'] = Course.objects.all()
+    context['departments'] = Department.objects.all()
 
+    chosen_department = request.GET.get('department')
+    if chosen_department != '' and chosen_department:
+        context['courses'] = Course.objects.all().filter(department = chosen_department)
+        context['selected_department'] = int(chosen_department)
+
+        # check if it's section editing
+        if type == 'section':
+            context['courses'] = Course.objects.filter(
+                Q(department=chosen_department) | Q(pk = Section.objects.get(pk = pk).course.pk)
+            )
     if request.method == 'POST':
         if type == 'course':
             pass
@@ -86,6 +97,7 @@ def courses_and_sections_edit_view(request, type, pk):
                     default=1
                 )
             ).order_by('first')
+
     return render(request, 'courses/courses_panel.html' ,context)
 
 def courses_and_sections_delete_view(request, type, pk):
