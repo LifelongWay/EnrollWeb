@@ -45,6 +45,56 @@ body {
   transform: translateY(-2px);
 }
 
+.nav-divider {
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    height: 30px;
+    margin: 0 0.75rem;
+}
+
+@media (max-width: 991.98px) {
+    .nav-divider {
+        display: none;
+    }
+    
+    .navbar-nav .nav-item {
+        margin: 0.25rem 0;
+    }
+}
+
+.navbar-content-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.navbar-panel-items {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.navbar-user-items {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.nav-link {
+    white-space: nowrap;
+}
+
+@media (min-width: 992px) {
+    .navbar-panel-items .nav-item {
+        margin-right: 0.5rem;
+    }
+    
+    .navbar-user-items .nav-item {
+        margin-left: 0.5rem;
+    }
+}
+
 /* ===== Main Content ===== */
 main {
   flex: 1;
