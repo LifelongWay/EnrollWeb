@@ -1,0 +1,31 @@
+
+/* Инпуты внутри карточки */
+.section-form input.section-input,
+.section-form select.section-select,
+.section-form textarea.section-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    border-radius: 0;
+    color: #fff;
+    box-shadow: none;
+    transition: border-color 0.3s;
+}
+
+/* Фокус инпутов */
+.section-form input.section-input:focus,
+.section-form select.section-select:focus,
+.section-form textarea.section-input:focus {
+    outline: none;
+    border-bottom: 1px solid #ffeb3b;
+}
+
+/* Отступы между полями */
+.section-form .form-group {
+    margin-bottom: 1rem;
+}
+
+/* Кнопка */
+.section-form button {
+    margin-top: 1rem;
+}

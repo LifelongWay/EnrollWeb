@@ -1,0 +1,144 @@
+.section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem; /* small space between text and input */
+}
+
+.section-input {
+    border: none;              /* remove default input border */
+    background: transparent;   /* blend with badge bg */
+    color: inherit;            /* use badge text color */
+    width: 3rem;               /* adjust width as needed */
+    text-align: center;        /* center number */
+    padding: 0;                /* remove extra padding */
+    margin: 0;
+    font-weight: bold;
+    height: 1.2em;             /* keep height inline with text */
+    line-height: 1.2em;        /* vertical alignment */
+}
+
+.section-input:focus {
+    outline: none;             /* remove blue border on focus */
+    box-shadow: none;
+}
+
+
+.section-input,
+.section-select {
+    border: none;
+    background: transparent;
+    color: inherit;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+    height: 1.4em;       /* matches text height */
+    line-height: 1.4em;
+    vertical-align: middle;
+    width: auto;         /* shrink to fit */
+    display: inline-block;
+}
+
+.section-input {
+    text-align: center;
+    width: 3rem; /* keep numbers compact */
+}
+input[name="year"] {
+    width: 5rem;
+    line-height: 2rem;
+    text-align: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.3); /* very light white border */
+    border-radius: 0.25rem;                      /* small rounding */
+    background: transparent;                     /* show card background */
+    color: #fff;                                 /* text color */
+    padding: 0 0.25rem;
+    box-sizing: border-box;                      /* include padding in width */
+}
+
+
+
+.section-select {
+    appearance: none;    /* cleaner dropdown */
+    padding-right: 1rem; /* space for arrow */
+    background: transparent;
+}
+
+.section-input:focus,
+.section-select:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+
+.section-form input[type="file"] {
+    display: none; /* hide the ugly default */
+}
+
+.section-form .custom-file-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #fff;
+
+    background: linear-gradient(135deg, #546e7a, #37474f);
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.section-form .custom-file-label i {
+    font-size: 1rem;
+}
+
+.section-form .custom-file-label:hover {
+    background: linear-gradient(135deg, #607d8b, #455a64);
+    transform: translateY(-2px);
+}
+
+.section-form .custom-file-label:active {
+    transform: translateY(0);
+}
+
+.image-input-container {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+
+/* Button */
+
+.section-form button {
+    display: inline-block;
+    margin: 0.75rem auto 1rem auto;
+    padding: 0.4rem 1.2rem;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    color: #fff;
+    background: linear-gradient(135deg, #4cafef, #1976d2);
+    border: none;
+    border-radius: 0.4rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.section-form button:hover {
+    background: linear-gradient(135deg, #5cc1ff, #2196f3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.section-form button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}

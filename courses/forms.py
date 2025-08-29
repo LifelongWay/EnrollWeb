@@ -37,7 +37,18 @@ class CourseForm(forms.ModelForm):
 class SectionForm(forms.ModelForm):
     class Meta:
         model = Section
-        fields = ['teacher', 'image', 'section_number', 'course', 'capacity', 'year', 'semester', 'students']
+        fields = ['section_number', 'teacher', 'year', 'semester', 'capacity', 'image']
+
+        widgets = {
+            'teacher': forms.Select(attrs={'class': 'section-select'}),
+            'course': forms.Select(attrs={'class': 'section-select'}),
+            'section_number': forms.NumberInput(attrs={'class': 'section-input', 'min': 1}),
+            'year': forms.NumberInput(attrs={'class': 'section-input'}),
+            'semester': forms.Select(attrs={'class': 'section-select'}),
+            'capacity': forms.NumberInput(attrs={'class': 'section-input'}),
+            'image': forms.FileInput()
+        }
+
 
         labels = {
             'teacher': 'Instructor',
@@ -46,3 +57,9 @@ class SectionForm(forms.ModelForm):
             'course': 'Course',
             'capacity': 'Class Capacity:',
         }
+
+    def __init__(self, *args, **kwargs):
+        course = kwargs.pop('course', None)
+        super().__init__(*args, **kwargs)
+        if course:
+            self.instance.course = course

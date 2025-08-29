@@ -57,7 +57,7 @@ class Section(models.Model):
         if self.section_number < 10:
             return f'{self.course}.0{self.section_number}'
         
-        return f'{self.course}.{self.section_bumber}'
+        return f'{self.course}.{self.section_number}'
 class Enrollment(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, blank = False, null = False)
     section = models.ForeignKey(Section, on_delete=models.CASCADE, blank = False, null = False)

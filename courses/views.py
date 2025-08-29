@@ -1,12 +1,16 @@
 from django.shortcuts import render,redirect
 from .models import Course, Section
 from .forms import CourseForm, SectionForm
+from django.db.models import Case, When
 
 from departments.models import Department
 # Create your views here.
 
 
-def courses_and_sections_view(request, type=None):
+def courses_and_sections_view(request, course_name = None, course_id = None, type=None):
+    # when course_name and course_id are given -> it's section creation
+    if course_name and course_id: type = 'section'
+
     # courses are always in context
     context = {}
     context['courses'] = Course.objects.all()
@@ -22,11 +26,14 @@ def courses_and_sections_view(request, type=None):
         if type == 'course':
             add_form = CourseForm(request.POST)
         elif type == 'section':
-            add_form = SectionForm(request.POST, request.FILES)
+            add_form = SectionForm(request.POST, request.FILES, course = context['courses'].get(pk = course_id))
         
         if add_form.is_valid():
+            print("VALID!")
             # add instance
             add_form.save()
+        else:
+            print(add_form.errors)
         # after querying escape querying url moving to courses page 
         return redirect('courses:panel')
     else:                  # GET
@@ -35,8 +42,16 @@ def courses_and_sections_view(request, type=None):
             course_form = CourseForm()
             context['add_course_form'] = course_form
         elif type == 'section':  # getting course edit form
-            section_form = SectionForm()
+            section_form = SectionForm() 
             context['add_section_form'] = section_form
+            # add tp context which course it belongs to
+            context['course_id'] = course_id
+            context['courses'] = context['courses'].annotate(
+                first=Case(
+                    When(pk=course_id, then=0),
+                    default=1
+                )
+            ).order_by('first')
 
     # return courses with form, if gotten
     return render(request ,'courses/courses_panel.html', context)

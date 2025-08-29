@@ -1,149 +1,240 @@
-
-
 {% extends "layout.html" %}
 {% load static %}
 {% load groupfilters %}
 
 {% block extra_css %}
-    <link rel = 'stylesheet' href = "{% static 'courses/css/courses.css' %}"/>
+    <link rel="stylesheet" href="{% static 'courses/css/courses.css' %}"/>
+    <link rel="stylesheet" href="{% static 'courses/css/sections.css' %}"/>
 {% endblock %}
 
 {% block more_navigation %}
-    <div class="container my-5">
-        <div class="panel-header d-flex align-items-center mb-4">
-            <h1>Courses & Sections</h1>
+<div class="container my-5">
+    
+    <!-- Panel Header -->
+    <div class="panel-header d-flex align-items-center mb-4">
+        <h1>Courses & Sections</h1>
 
-            <!-- Department Filter -->
-            <form method="get" class="d-flex ms-auto align-items-center gap-2">
-                <label for="department" class="mb-0">Department:</label>
-                <select name="department" id="department" class="custom-select" onchange = "this.form.submit()">
-                    <option value="">All</option>
-                    {% for dept in departments %}
-                        <option value="{{ dept.dept_id }}" {% if dept.dept_id == selected_department %}selected{% endif %}>
-                            {{ dept.name }}
-                        </option>
-                    {% endfor %}
-                </select>
+        <!-- Department Filter -->
+        <form method="get" class="d-flex ms-auto align-items-center gap-2">
+            <label for="department" class="mb-0">Department:</label>
+            <select name="department" id="department" class="custom-select" onchange="this.form.submit()">
+                <option value="">All</option>
+                {% for dept in departments %}
+                    <option value="{{ dept.dept_id }}" {% if dept.dept_id == selected_department %}selected{% endif %}>
+                        {{ dept.name }}
+                    </option>
+                {% endfor %}
+            </select>
 
-                {% if user|has_group:"Registrar" or user|has_group:"Admin" %}
-                    <a href="{% url 'courses:add' type='section' %}" class="add-btn">
-                        <i class="fas fa-plus me-2"></i>Arrange Section
-                    </a>
-                    <a href="{% url 'courses:add' type='course' %}" class="add-btn">
-                        <i class="fas fa-plus me-2"></i>Add Course
-                    </a>
-                {% endif %}
+            {% if user|has_group:"Registrar" or user|has_group:"Admin" %}
+                <a href="{% url 'courses:add' type='course' %}" class="add-btn">
+                    <i class="fas fa-plus me-2"></i>Add Course
+                </a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Add Course Form -->
+    {% if add_course_form %}
+        <div class="sections-container">
+            <div class="sections-header">
+                <h3 class="course-name">Add New Course</h3>
+                <p class="course-meta">Enter course details below</p>
+            </div>
+
+            <form class="course-add-form" method="post" action="{% url 'courses:add' type='course' %}">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    {{ add_course_form.name.label_tag }}
+                    {{ add_course_form.name }}
+                </div>
+
+                <div class="form-group">
+                    {{ add_course_form.department.label_tag }}
+                    {{ add_course_form.department }}
+                </div>
+
+                <div class="form-group">
+                    {{ add_course_form.credits.label_tag }}
+                    {{ add_course_form.credits }}
+                </div>
+
+                <div class="form-group prerequisite_courses">
+                    {{ add_course_form.prerequisite_courses.label_tag }}
+                    <div class="checkboxes-wrapper">
+                        {{ add_course_form.prerequisite_courses }}
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit</button>
             </form>
         </div>
-        <div class="">
-            {% if add_course_form %}
-                <div class="sections-container">
-                    <div class="sections-header">
-                        <h3 class="course-name">Add New Course</h3>
-                        <p class="course-meta">Enter course details below</p>
-                    </div>
+    {% endif %}
 
-                    <form class="course-add-form"
-                        method="post" 
-                        action="{% url 'courses:add' type='course' %}">
-                        {% csrf_token %}
-
-                        <div class="form-group">
-                            {{ add_course_form.name.label_tag }}
-                            {{ add_course_form.name }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ add_course_form.department.label_tag }}
-                            {{ add_course_form.department }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ add_course_form.credits.label_tag }}
-                            {{ add_course_form.credits }}
-                        </div>
-
-                        <div class="form-group prerequisite_courses">
-                            {{ add_course_form.prerequisite_courses.label_tag }}
-                            <div class="checkboxes-wrapper">
-                                {{ add_course_form.prerequisite_courses }}
-                            </div>
-                        </div>
-
-                        <button type="submit" class="submit-btn">Submit</button>
-                    </form>
+    <!-- Courses & Sections -->
+    {% for course in courses %}
+        <div class="sections-container">
+            
+            <!-- Course Header -->
+            <div class="sections-header d-flex justify-content-between align-items-center">
+                
+                <!-- Left: Course info -->
+                <div>
+                    <h3 class="course-name mb-0">{{ course.name }}</h3>
+                    <p class="course-meta mb-0">
+                        <span class="department">{{ course.department.name }}</span> | 
+                        <span class="credits">{{ course.credits }} Credits</span>
+                    </p>
                 </div>
-            {% endif %}
 
-            {% for course in courses %}
-                <div class="sections-container">
-                    <!-- Dark header -->
-                    <div class="sections-header">
-                        <h3 class="course-name">{{ course.name }}</h3>
-                        <p class="course-meta">
-                            <span class="department">{{ course.department.name }}</span> | 
-                            <span class="credits">{{ course.credits }} Credits</span>
-                        </p>
-                    </div>
+                <!-- Right: Action buttons -->
+                <div class="d-flex gap-2">
+                    {% if user|has_group:"Registrar" or user|has_group:"Teacher" %}
+                        <a href="{% url 'courses:add-section' course_id=course.pk course_name=course.name %}" 
+                           class="btn btn-sm btn-primary d-flex align-items-center gap-1">
+                            <i class="fas fa-plus"></i> Add Section
+                        </a>
+                    {% endif %}
 
-                    <!-- Sections grid -->
-                    <div class="sections-grid">
-                        {% for section in course.sections.all %}
-                            {% if section.pk == edit_section_pk %}
-                                <form class="card section-card edit-card"
-                                    method="post" enctype="multipart/form-data"
-                                    action="{% url 'courses:edit' type='section' pk=section.pk %}">
-                                    {% csrf_token %}
-                                    {{ edit_section_form }}
-                                    <button class="submit-btn">Submit</button>
-                                </form>
-                            {% else %}
-                                <div class="card section-card"
-                                {% if section.image %}
-                                    style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-                                                    url('{{ section.image.url }}') no-repeat center center; 
-                                            background-size: cover; color: white;
-                                            width: 30%;
-                                            "
-                                    {% else %}
-                                    style="background: linear-gradient(135deg, #607d8b, #455a64); color: #f1f1f1;" 
-                                    {% endif %}>
-                                    <div class="card-body">
-                                        <h4 class="card-title">
-                                            <span class="badge rounded-pill {% if section.image %}bg-warning text-dark{% else %}bg-info text-dark{% endif %} fw-bold">
-                                                Section {{ section.section_number }}
-                                            </span>
-                                        </h4>
-                                        {% if section.teacher %}
-                                        <p class="mb-0"><i class="fas fa-chalkboard-teacher me-2"></i>{{ section.teacher }}</p>
-                                        {% endif %}
-                                        {% if section.capacity %}
-                                        <p class="mb-0"><i class="fas fa-users me-2"></i>Capacity: {{ section.capacity }}</p>
-                                        {% endif %}
-                                    </div>
-                                    {% if user|has_group:"Registrar" or user|has_group:"Teacher" %}
-                                    <div class="card-footer  {% if section.image %}bg-dark{% else %}bg-secondary{% endif %} d-flex justify-content-between">
-                                        <a href="{% url 'courses:edit' type='section' pk=section.pk %}" class="btn btn-sm btn-outline-light">
-                                            <i class="fas fa-edit me-1"></i>Edit
-                                        </a>
-                                        {% if user|has_group:"Registrar" %}
+                    {% if user|has_group:"Registrar" %}
+                        <a href="{% url 'courses:delete' type='course' pk=course.pk %}" 
+                           class="btn btn-sm btn-danger d-flex align-items-center gap-1"
+                           onclick="return confirm('Are you sure you want to delete this course and all its sections?');">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sections Grid -->
+            <div class="sections-grid">
+                
+                {% for section in course.sections.all %}
+                    
+                    {% if section.pk == edit_section_pk %}
+                        <!-- Edit Section Form -->
+                        <form class="card section-card edit-card"
+                              method="post" enctype="multipart/form-data"
+                              action="{% url 'courses:edit' type='section' pk=section.pk %}">
+                            {% csrf_token %}
+                            {{ edit_section_form }}
+                            <button class="submit-btn">Submit</button>
+                        </form>
+                    
+                    {% else %}
+                        <!-- Section Card -->
+                        <div class="card section-card"
+                             {% if section.image %}
+                             style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                                            url('{{ section.image.url }}') no-repeat center center; 
+                                    background-size: cover; color: white; width: 30%;"
+                             {% else %}
+                             style="background: linear-gradient(135deg, #607d8b, #455a64); color: #f1f1f1;"
+                             {% endif %}>
+                             
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <span class="badge rounded-pill {% if section.image %}bg-warning text-dark{% else %}bg-info text-dark{% endif %} fw-bold">
+                                        Section {{ section.section_number }}
+                                    </span>
+                                </h4>
+
+                                {% if section.teacher %}
+                                    <p class="mb-0">
+                                        <i class="fas fa-chalkboard-teacher me-2"></i>{{ section.teacher }}
+                                    </p>
+                                {% endif %}
+                                
+                                {% if section.capacity %}
+                                    <p class="mb-0">
+                                        <i class="fas fa-users me-2"></i>Capacity: {{ section.capacity }}
+                                    </p>
+                                {% endif %}
+                                
+                                {% if section.year and section.semester %}
+                                    <p class="mb-0">
+                                        <i class="fas fa-calendar-alt me-2"></i>
+                                        {{ section.year }}{% if section.semester %} / {{ section.get_semester_display }}{% endif %}
+                                    </p>
+                                {% endif %}
+                            </div>
+                            
+                            {% if user|has_group:"Registrar" or user|has_group:"Teacher" %}
+                                <div class="card-footer {% if section.image %}bg-dark{% else %}bg-secondary{% endif %} d-flex justify-content-between">
+                                    <a href="{% url 'courses:edit' type='section' pk=section.pk %}" class="btn btn-sm btn-outline-light">
+                                        <i class="fas fa-edit me-1"></i>Edit
+                                    </a>
+                                    {% if user|has_group:"Registrar" %}
                                         <a href="{% url 'courses:delete' type='section' pk=section.pk %}" class="btn btn-sm btn-outline-danger">
                                             <i class="fas fa-trash me-1"></i>Delete
                                         </a>
-                                        {% endif %}
-                                    </div>
                                     {% endif %}
                                 </div>
                             {% endif %}
-                            {% empty %}
-                            <p class="text-muted text-center fs-5 mt-4">No courses or sections available.</p>
-                        {% endfor %}
-                    </div>
-                </div>
+                        </div>
+                    {% endif %}
+                
                 {% empty %}
-                <p class="text-muted text-center fs-5 mt-4">No courses or sections available.</p>
+                    <p class="text-muted text-center fs-5 mt-4">No courses or sections available.</p>
+                
                 {% endfor %}
 
+                <!-- Add Section Form -->
+                {% if add_section_form and course.pk == course_id %}
+                    <form method = 'post' enctype="multipart/form-data" action = "{% url 'courses:add-section' course_name=course.name course_id=course_id %}"
+                        class="section-form card section-card"
+                          {% if section.image %}
+                          style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                                          url('{{ section.image.url }}') no-repeat center center; 
+                                  background-size: cover; color: white; width: 30%;"
+                          {% else %}
+                          style="background: linear-gradient(135deg, #607d8b, #455a64); color: #f1f1f1;"
+                          {% endif %}>
+                          
+                        {% csrf_token %}
+
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <span style="display: inline-flex; align-items: center; flex-direction: row;" 
+                                      class="badge rounded-pill {% if section.image %}bg-warning text-dark{% else %}bg-info text-dark{% endif %} fw-bold">
+                                    Section {{ add_section_form.section_number }}
+                                </span>
+                            </h4>
+
+                            <p class="mb-0">
+                                <i class="fas fa-chalkboard-teacher me-2"></i>
+                                {{ add_section_form.teacher }}
+                            </p>
+
+                            <p class="mb-0">
+                                <i class="fas fa-users me-2"></i>
+                                Capacity: {{ add_section_form.capacity }}
+                            </p>
+
+                            <p class="mb-0">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                {{ add_section_form.year }} / {{ add_section_form.semester }}
+                            </p>
+                            <p class="mb-0 image-input-container">
+                                <label for="id_image" class="custom-file-label">
+                                    <i class="fas fa-image"></i> Upload Image
+                                </label>
+                                {{ add_section_form.image }}
+                            </p>
+
+                        </div>
+                        
+                        <button>submit</button>
+                    </form>
+                {% endif %}
+            
+            </div>
         </div>
-    </div>
+    
+    {% empty %}
+        <p class="text-muted text-center fs-5 mt-4">No courses or sections available.</p>
+    {% endfor %}
+
+</div>
 {% endblock %}
