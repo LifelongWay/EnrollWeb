@@ -1,0 +1,170 @@
+{% extends 'layout.html' %}
+{% load groupfilters %}
+{% load curriculumtags %}
+
+{% block title %}
+Departments Dashboard
+{% endblock %}
+{% block extra_css %}
+<style>
+/* ================= CONTAINER ================= */
+.departments-dashboard {
+    max-width: 1200px;
+    margin: 30px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #f0f0f0;
+    padding: 20px;
+    background: #1a2435ff; /* deep dark blue */
+    border-radius: 1.2rem;
+}
+
+/* PAGE TITLE */
+.departments-dashboard h2 {
+    margin-bottom: 30px;
+    font-size: 2.3rem;
+    color: #f0f0f0;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* ================= DEPARTMENT GRID ================= */
+.department-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+/* DEPARTMENT CARD */
+.department-card {
+    background: #1c2536; /* slightly lighter dark background */
+    border-radius: 1rem;
+    padding: 22px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.department-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.45);
+}
+
+/* DEPARTMENT NAME */
+.department-name {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #e0e0e0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #4a90e2;
+    padding-bottom: 6px;
+}
+
+/* ================= PROGRAM CARD ================= */
+.program-card {
+    background: linear-gradient(135deg, #3a506b, #1b2a48);
+    border-radius: 0.9rem;
+    padding: 16px 20px;
+    margin-bottom: 18px;
+    color: #f0f0f0;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.program-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+    background: linear-gradient(135deg, #1b2a48, #0f1c2d);
+}
+
+/* PROGRAM NAME */
+.program-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* ================= SEMESTER BLOCK ================= */
+.semester-header {
+    font-weight: 600;
+    margin-top: 14px;
+    margin-bottom: 10px;
+    color: #ffd54f; /* muted gold accent */
+    font-size: 1rem;
+    background: rgba(255,213,79,0.15);
+    padding: 6px 14px;
+    border-radius: 6px;
+}
+
+/* SEMESTER COURSE LIST */
+.semester-course-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 6px 0 14px 0;
+}
+
+.semester-course-list li {
+    background: rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin: 4px 0;
+    font-size: 0.95rem;
+    color: #f0f0f0;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.semester-course-list li:hover {
+    background: rgba(255,255,255,0.18);
+    transform: translateX(2px);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .department-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="departments-dashboard">
+    <h2>Departments Dashboard</h2>
+
+    <div class="department-grid">
+        {% for department in departments %}
+        <div class="department-card">
+            <div class="department-name">{{ department.name }}</div>
+
+            {% if department.programs.exists %}
+                {% for program in department.programs.all %}
+                <div class="program-card">
+                    <div class="program-name">{{ program }}</div>
+
+                    {% semesters_in_program program as semester_list %}
+                    {% if semester_list %}
+                        {% for semester in semester_list %}
+                        <div class="semester-block">
+                            <div class="semester-header">Semester {{ semester }}</div>
+                            <ul class="semester-course-list">
+                                {% courses_for_semester program semester as courses %}
+                                {% for course in courses %}
+                                    <li>{{ course.name }} ({{ course.credits }}cr)</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No courses yet.</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No programs yet.</p>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p>No departments found.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

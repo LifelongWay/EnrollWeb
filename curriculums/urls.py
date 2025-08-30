@@ -1,9 +1,9 @@
 from django.urls import path
 from . import views
 
-app_name = 'curriculum'
+app_name = 'curriculums'
 
 urlpatterns = [
-    path('curriculum/', views.curriculum_view, name = 'my'),
-    path('curriculum/panel/', views.curriculum_panel, name = 'panel')
+    path('my/', views.my_curriculum, name = 'my'),
+    path('panel/', views.curriculums_editor, name = 'editor')
 ]
