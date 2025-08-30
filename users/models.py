@@ -35,6 +35,7 @@ class Teacher(models.Model):
 class Student(models.Model):
     profile_img = models.ImageField(upload_to='users/profile_imgs/', default = 'users/profile_imgs/default.png')
     student_id = models.AutoField(primary_key=True)
+    program = models.ForeignKey('curriculums.Program', on_delete=models.PROTECT, null=True, related_name='students')
     gpa = models.FloatField(null = False)
 
     # ISA rel
@@ -70,3 +71,11 @@ class Registrar(models.Model):
         # set registrar's group
         registrar_group, _ = Group.objects.get_or_create(name = 'Registrar')
         self.user.groups.add(registrar_group)
+
+    def __str__(self):
+        parts = self.user.username.split('.')
+        if len(parts) >= 2:
+            first, last = parts[0].capitalize(), parts[1].capitalize()
+        else:
+            first, last = self.user.first_name, self.user.last_name
+        return f"{first} {last}"
