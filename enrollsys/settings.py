@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'enrollsys',
     'users',
     'courses',
-    'departments'
+    'departments',
+    'curriculums'
 ]
 
 MIDDLEWARE = [

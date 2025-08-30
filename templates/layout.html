@@ -90,6 +90,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.app_name == 'curriculums' %}active{% endif %}" 
+                      href="{% url 'home' %}">
+                        <i class="fas fa-project-diagram me-1"></i> Curriculum Editor
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.app_name == 'courses' %}active{% endif %}" 
                       href="{% url 'courses:panel' %}">
                         <i class="fas fa-book me-1"></i> Courses

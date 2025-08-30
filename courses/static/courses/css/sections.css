@@ -130,7 +130,7 @@ input[name="year"]:focus {
 
 .section-form button {
     display: inline-block;
-    margin: 0.75rem auto 1rem auto;
+    margin: 0rem  0rem ;
     padding: 0.4rem 1.2rem;
 
     font-size: 0.9rem;

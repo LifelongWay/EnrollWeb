@@ -80,24 +80,40 @@
             <div class="sections-header d-flex justify-content-between align-items-center">
                 
                 <!-- Left: Course info -->
-                <div>
-                    <h3 class="course-name mb-0">{{ course.name }}</h3>
-                    <p class="course-meta mb-0">
-                        <span class="department">{{ course.department.name }}</span> | 
-                        <span class="credits">{{ course.credits }} Credits</span>
-                    </p>
-                </div>
-
+                {% if edit_course_form and course.pk == edit_course_pk %}
+                    <form class = 'edit-course-form' method = 'post' action = "{% url 'courses:edit' type='course' pk=course.pk %}">
+                        {% csrf_token %}
+                        <h3 class="course-name mb-0">{{ edit_course_form.name }}</h3>
+                        <p class="course-meta mb-0" style = "display:flex; flex-direction: row;">
+                            <span class="department">{{ edit_course_form.department }} Department</span> | 
+                            <span class="credits">{{ edit_course_form.credits }} Credits</span>
+                        </p>
+                        <div class = 'section-form'>
+                        <button type="submit">Submit</button>
+                        </div>
+                    </form>
+                {% else %}
+                    <div>
+                        <h3 class="course-name mb-0">{{ course.name }}</h3>
+                        <p class="course-meta mb-0">
+                            <span class="department">{{ course.department.name }}</span> | 
+                            <span class="credits">{{ course.credits }} Credits</span>
+                        </p>
+                    </div>
+                {% endif %}
                 <!-- Right: Action buttons -->
                 <div class="d-flex gap-2">
-                    {% if user|has_group:"Registrar" or user|has_group:"Teacher" %}
+
+                    {% if user|has_group:"Registrar" %}
+                        <a href="{% url 'courses:edit' type='course' pk=course.pk %} " class="btn btn-sm btn-outline-light d-flex align-items-center gap-1">
+                            <i class="fas fa-edit me-1"></i>Edit
+                        </a>
+
                         <a href="{% url 'courses:add-section' course_id=course.pk course_name=course.name %}" 
                            class="btn btn-sm btn-primary d-flex align-items-center gap-1">
                             <i class="fas fa-plus"></i> Add Section
                         </a>
-                    {% endif %}
-
-                    {% if user|has_group:"Registrar" %}
+                    
                         <a href="{% url 'courses:delete' type='course' pk=course.pk %}" 
                            class="btn btn-sm btn-danger d-flex align-items-center gap-1"
                            onclick="return confirm('Are you sure you want to delete this course and all its sections?');">

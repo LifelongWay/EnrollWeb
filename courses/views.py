@@ -73,11 +73,19 @@ def courses_and_sections_edit_view(request, type, pk):
             )
     if request.method == 'POST':
         if type == 'course':
-            pass
+            course_instance = Course.objects.get(pk=pk)
+            form = CourseForm(request.POST, instance = course_instance)
+            if form.is_valid():
+                form.save()
+            else:
+                print(form.errors)
         elif type == 'section':
             section_instance = Section.objects.get(pk = pk)
             form = SectionForm(request.POST, request.FILES,  instance = section_instance)
-            form.save()
+            if form.is_valid():
+                form.save()
+            else:
+                print(form.errors)
         return redirect('courses:panel')
     else:
         
@@ -86,6 +94,12 @@ def courses_and_sections_edit_view(request, type, pk):
             course_form = CourseForm(instance = old_course)
             context['edit_course_pk'] = pk
             context['edit_course_form'] = course_form
+            context['courses'] = context['courses'].annotate(
+                first=Case(
+                    When(pk=pk, then=0),
+                    default=1
+                )
+            ).order_by('first')
         elif type == 'section':
             old_section = Section.objects.get(pk = pk)
             section_form = SectionForm(instance=old_section)
