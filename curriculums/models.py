@@ -9,9 +9,9 @@ from courses.models import Course
 
 class Program(models.Model):
     DEGREE_CHOICES = [
-        ('BS', 'Bachelor of Science (B.S.)'),
-        ('MS', 'Master of Science (M.S.)'),
-        ('PhD', 'Doctor of Philosophy (Ph.D.)'),
+        ('BS', 'Bachelor of Science'),
+        ('MS', 'Master of Science'),
+        ('PhD', 'Doctor of Philosophy'),
     ]
 
     name = models.CharField(max_length=200)

@@ -8,151 +8,255 @@ Departments Dashboard
 {% block extra_css %}
 <style>
 /* ================= CONTAINER ================= */
+body {
+    background-color: #152238; /* darker navy to fit container */
+}
 .departments-dashboard {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 30px auto;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #f0f0f0;
     padding: 20px;
-    background: #1a2435ff; /* deep dark blue */
+    background: #0e1a2b;
     border-radius: 1.2rem;
+
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.6),   /* blue glow */
+                0 0 30px rgba(74, 144, 226, 0.3),   /* spread */
+                0 0 60px rgba(74, 144, 226, 0.15);  /* outer glow */
 }
 
-/* PAGE TITLE */
-.departments-dashboard h2 {
-    margin-bottom: 30px;
-    font-size: 2.3rem;
-    color: #f0f0f0;
+/* HEADER BAR */
+.dashboard-header {
+    margin-bottom: 25px;
     text-align: center;
+}
+.dashboard-header h2 {
+    font-size: 2.2rem;
+    color: #e6f2ff;
     font-weight: 700;
     letter-spacing: 0.5px;
 }
 
-/* ================= DEPARTMENT GRID ================= */
+/* ACTION BUTTONS */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+.action-buttons a {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+.btn-edit {
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: #fff;
+}
+.btn-edit:hover {
+    background: linear-gradient(135deg, #357abd, #2a5d8f);
+    transform: translateY(-2px);
+}
+.btn-add {
+    background: linear-gradient(135deg, #26a69a, #1f8d84);
+    color: #fff;
+}
+.btn-add:hover {
+    background: linear-gradient(135deg, #1f8d84, #16736c);
+    transform: translateY(-2px);
+}
+
+/* ================= DEPARTMENT LIST ================= */
 .department-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: 24px;
 }
 
 /* DEPARTMENT CARD */
 .department-card {
-    background: #1c2536; /* slightly lighter dark background */
+    background: #142339;
     border-radius: 1rem;
     padding: 22px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.35);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .department-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 14px 32px rgba(0,0,0,0.45);
 }
 
-/* DEPARTMENT NAME */
+/* DEPARTMENT HEADER */
+.department-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
 .department-name {
     font-size: 1.6rem;
     font-weight: 700;
-    color: #e0e0e0;
-    margin-bottom: 20px;
+    color: #a3d5ff;
     border-bottom: 2px solid #4a90e2;
     padding-bottom: 6px;
 }
 
-/* ================= PROGRAM CARD ================= */
+/* PROGRAM CARD */
 .program-card {
-    background: linear-gradient(135deg, #3a506b, #1b2a48);
+    text-align: center;
+    background: linear-gradient(135deg, #23395d, #162236);
     border-radius: 0.9rem;
     padding: 16px 20px;
     margin-bottom: 18px;
-    color: #f0f0f0;
+    color: #e8f4ff;
     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
-
 .program-card:hover {
     transform: translateY(-4px) scale(1.02);
     box-shadow: 0 12px 28px rgba(0,0,0,0.5);
-    background: linear-gradient(135deg, #1b2a48, #0f1c2d);
+    background: linear-gradient(135deg, #1b2c48, #0f1c2d);
 }
 
-/* PROGRAM NAME */
-.program-name {
-    font-size: 1.25rem;
-    font-weight: 600;
+/* PROGRAM HEADER */
+.program-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 12px;
 }
 
-/* ================= SEMESTER BLOCK ================= */
+
+/* ================= SEMESTER GRID ================= */
+.semester-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 12px;
+}
+.semester-block {
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 10px 14px;
+}
 .semester-header {
     font-weight: 600;
-    margin-top: 14px;
-    margin-bottom: 10px;
-    color: #ffd54f; /* muted gold accent */
-    font-size: 1rem;
-    background: rgba(255,213,79,0.15);
-    padding: 6px 14px;
-    border-radius: 6px;
+    margin: 0 0 6px 0;
+    color: #ffd54f;
+    font-size: 0.9rem;
+    background: rgba(255,213,79,0.12);
+    padding: 4px 10px;
+    border-radius: 5px;
 }
-
-/* SEMESTER COURSE LIST */
 .semester-course-list {
     list-style: none;
     padding-left: 0;
-    margin: 6px 0 14px 0;
+    margin: 4px 0 0 0;
 }
-
 .semester-course-list li {
-    background: rgba(255,255,255,0.08);
-    border-radius: 6px;
-    padding: 6px 12px;
-    margin: 4px 0;
-    font-size: 0.95rem;
+    background: rgba(255,255,255,0.07);
+    border-radius: 5px;
+    padding: 4px 10px;
+    margin: 3px 0;
+    font-size: 0.9rem;
     color: #f0f0f0;
     transition: background 0.2s, transform 0.2s;
 }
-
 .semester-course-list li:hover {
-    background: rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.15);
     transform: translateX(2px);
 }
 
-/* ================= RESPONSIVE ================= */
-@media (max-width: 768px) {
-    .department-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    }
+input[name='name'],
+select[name='degree'] {
+    vertical-align: middle;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* subtle light border */
+    background: transparent;      /* no background */
+    color: #cce7ff;              /* same as program header text */
+    font-size: 1.25rem;          /* match program name size */
+    font-weight: 600;            /* match header weight */
+    padding: 4px 8px;            /* small padding */
+    margin: 0px 0px;
+    border-radius: 4px;          /* slight rounding */
+    outline: none;               /* remove default focus outline */
+    width: auto;                 /* shrink to content */
+    transition: border-color 0.2s ease, background 0.2s ease;
 }
+
+input[name='name']:focus,
+select[name='degree']:focus {
+    border-color: #4a90e2;               /* highlight border on focus */
+    background: rgba(255, 255, 255, 0.05); /* subtle highlight */
+}
+
+    select[name='degree'] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        text-align: left;
+        padding-right: 24px; /* space for arrow */
+        cursor: pointer;
+    }
+
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="departments-dashboard">
-    <h2>Departments Dashboard</h2>
+
+    <div class="dashboard-header">
+        <h2>Departments Dashboard</h2>
+    </div>
 
     <div class="department-grid">
         {% for department in departments %}
         <div class="department-card">
-            <div class="department-name">{{ department.name }}</div>
+            <div class="department-header">
+                <div class="department-name">{{ department.name }}</div>
+                <div class="action-buttons">
+                    <a href="{% url 'curriculums:program-add' dept_id=department.pk %}" class="btn-add">➕ Add Program</a>
+                </div>
+            </div>
 
             {% if department.programs.exists %}
+                {% if program_form and dept_id == department.pk %}
+                    <form method = 'post' action = '{% url 'curriculums:program-add' dept_id=department.pk %}' class="program-card">
+                        {% csrf_token %}
+                        <div class="program-header">
+                            <div> {{ program_form.name }}</div>
+                            <div> {{ program_form.degree }} </div>
+                            <div class="action-buttons">
+                                <button type='submit' style = "border: none; padding: 5px 10px; border-radius: 20px;" class="btn-edit"> Submit </button>
+                            </div>
+                        </div>
+                    </form>
+                {% endif %}
                 {% for program in department.programs.all %}
                 <div class="program-card">
-                    <div class="program-name">{{ program }}</div>
+                    <div class="program-header">
+                        <div class="program-name">{{ program }}</div>
+                        <div class="action-buttons">
+                            <a href="{% url 'home' %}" class="btn-edit">✏️ Edit Program</a>
+                        </div>
+                    </div>
 
                     {% semesters_in_program program as semester_list %}
                     {% if semester_list %}
+                        <div class="semester-grid">
                         {% for semester in semester_list %}
-                        <div class="semester-block">
-                            <div class="semester-header">Semester {{ semester }}</div>
-                            <ul class="semester-course-list">
-                                {% courses_for_semester program semester as courses %}
-                                {% for course in courses %}
-                                    <li>{{ course.name }} ({{ course.credits }}cr)</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+                            <div class="semester-block">
+                                <div class="semester-header">Semester {{ semester }}</div>
+                                <ul class="semester-course-list">
+                                    {% courses_for_semester program semester as courses %}
+                                    {% for course in courses %}
+                                        <li>{{ course.name }} ({{ course.credits }}cr)</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         {% endfor %}
+                        </div>
                     {% else %}
                         <p>No courses yet.</p>
                     {% endif %}
