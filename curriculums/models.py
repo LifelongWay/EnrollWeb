@@ -40,4 +40,4 @@ class Curriculum(models.Model):
     numbered_semester = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.program.name} - {self.course.name} ({self.grade})"
+        return f"{self.program.name} - {self.course.name} (Semester {self.numbered_semester})"
