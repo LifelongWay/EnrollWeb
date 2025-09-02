@@ -433,9 +433,9 @@ select[name='degree']:focus {
                 parentElement.appendChild(newElement)
                 newElement.firstElementChild.addEventListener('input', onInput)
             }
-            else if(lastInputElement.value == '' && parentElement.lastElementChild != lastInputElement)
+            else if(lastInputElement.value == '' && parentElement.lastElementChild != lastInputElement.parentNode)
             {
-                parentElement.parentNode.lastElementChild.remove()
+                parentElement.lastElementChild.remove()
             }
         }
         function onChange(event)
