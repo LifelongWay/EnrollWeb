@@ -15,7 +15,7 @@ def curriculums_editor(request):
 
     return render(request, 'curriculums/curriculum_editor.html', context)
 
-def curriculum_add(request, dept_id):
+def program_add(request, dept_id):
     context = {}
     context['departments'] = makefirst(Department.objects.all(), dept_id)
     
@@ -41,7 +41,7 @@ def curriculum_add(request, dept_id):
     return render(request, 'curriculums/curriculum_editor.html', context)
 
 
-def curriculum_edit(request, program_id):
+def program_edit(request, program_id):
     context = {}
     
     context['departments'] = Department.objects.all()
@@ -58,6 +58,28 @@ def curriculum_edit(request, program_id):
     if request.method == 'POST':
         print("=== POST DATA ===")
         for inputName, inputValue in request.POST.items():
+
+            #       -- Program name/degree changes --
+            if(inputName == 'name'): 
+                new_program_name = inputValue
+                try:
+                    if(new_program_name.strip() != ''):
+                        program_instance.name = new_program_name
+                        program_instance.save()
+                except IntegrityError:
+                    pass 
+            
+            if(inputName == 'degree'):
+                new_program_degree = inputValue
+                try:
+                    program_instance.degree = new_program_degree
+                    program_instance.save()
+                except IntegrityError:
+                    pass
+
+
+            #       -- Courses changes --
+
             # skip unnecessary input, values
             if(not inputName.startswith('semester_')): continue
             
@@ -103,6 +125,7 @@ def curriculum_edit(request, program_id):
 
         print('Deleted Course Names: ', deleted_course_names)
         print('Added Course Names: ', added_course_names)
+
         return redirect('curriculums:editor')
     else:
         context['program_form'] = ProgramNameForm(instance = program_instance)
@@ -110,10 +133,10 @@ def curriculum_edit(request, program_id):
 
     return render(request, 'curriculums/curriculum_editor.html', context)
 
-def curriculum_delete(request, program_id):
+def program_delete(request, program_id):
     pass
 
-def my_curriculum(request):
+def my_program(request):
     pass
 
 
