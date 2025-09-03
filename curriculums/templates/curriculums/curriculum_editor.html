@@ -7,6 +7,48 @@ Departments Dashboard
 {% endblock %}
 {% block extra_css %}
 <style>
+    .course-credits-badge {
+    display: inline-block;
+    font-size: 0.95em;             /* slightly bigger for visibility */
+    font-weight: 700;
+    padding: 0.3em 0.5em;          /* a bit more padding to make it feel bigger */
+    margin-left: 6px;              /* small gap from course name */
+    background: linear-gradient(135deg, #4a90e2, #1f3c88); /* blue gradient matching page */
+    color: #fff;
+    border-radius: 0.4rem;         /* a little more rounded */
+    vertical-align: middle;
+    line-height: 1;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.15); /* subtle depth */
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3); /* readable text */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-credits-badge:hover {
+    transform: translateY(-1px) scale(1.05);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.2);
+}
+
+
+    /* SUBMIT BUTTON */
+.btn-submit {
+    background: linear-gradient(135deg, #4cafef, #357abd);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 22px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.5);
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #357abd, #285a8c);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.6);
+}
+
 /* ================= CONTAINER ================= */
 body {
     background-color: #152238; /* darker navy to fit container */
@@ -185,7 +227,7 @@ select[name='degree'] {
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-input[name='course_name_input'] {
+.semester-course-list input {
 
     vertical-align: middle;
     border: 1px solid rgba(255, 255, 255, 0.3); /* subtle light border */
@@ -253,6 +295,7 @@ select[name='degree']:focus {
                             {% if editing_program_id == program.pk %}
                             {% comment %} Program under edit {% endcomment %}
                                 <form method = 'post' action = "{% url 'curriculums:program-edit' program_id=editing_program_id %}" {% if editing_program_id == program.pk %}id="editing-program"{% endif %} class="program-card">
+                                    {% csrf_token %}
                                     <div class="program-header">
                                         <div> {{ program_form.name }}</div>
                                         <div> {{ program_form.degree }} </div>
@@ -270,7 +313,7 @@ select[name='degree']:focus {
                                                     <ul class="semester-course-list">
                                                         {% courses_for_semester program semester as courses %}
                                                         {% for course in courses %}
-                                                            <li><input name= 'course_name_input' value = '{{ course.name }} ({{ course.credits }}cr)' /></li>
+                                                            <li><input name = 'semester_{{semester}}' value = '{{ course.name }}' /></li>
                                                         {% endfor %}
                                                     </ul>
                                                 </div>
@@ -279,6 +322,8 @@ select[name='degree']:focus {
                                     {% else %}
                                         <p>No courses yet.</p>
                                     {% endif %}
+
+                                    <button type="submit" class="btn-submit"> Save </button>
                                 </form>
                             {% else %} 
                             {% comment %} Other Programs {% endcomment %}
@@ -299,7 +344,10 @@ select[name='degree']:focus {
                                                     <ul class="semester-course-list">
                                                         {% courses_for_semester program semester as courses %}
                                                         {% for course in courses %}
-                                                            <li>{{ course.name }} ({{ course.credits }}cr)</li>
+                                                            <li>
+                                                                {{ course.name }} ({{ course.credits }}cr)
+                                                                <span class="course-credits-badge">{{ course.credits }}cr</span>
+                                                            </li>    
                                                         {% endfor %}
                                                     </ul>
                                                 </div>
@@ -340,19 +388,19 @@ select[name='degree']:focus {
         const semesterGridElement = program_under_edit.querySelector('.semester-grid')
         const semesterBlockElement = semesterGridElement.lastElementChild
         const newSemesterBlockElement = document.createElement('div');
+        
+        let lastSemester = semesterGridElement.children.length
         newSemesterBlockElement.innerHTML = 
         `
             <div class="semester-block">
-                <div class="semester-header">Semester {{ semester }}</div>
+                <div class="semester-header">Semester ${lastSemester + 1}</div>
                 <ul class="semester-course-list">
-                    <li><input name= 'course_name_input' value = '' /></li>
+
                 </ul>
             </div>
         `
-        let lastSemester = semesterGridElement.children.length
 
-        newSemesterBlockElement.querySelector('.semester-header').innerHTML = `Semester ${lastSemester + 1}`
-        newSemesterBlockElement.querySelector('.semester-course-list').innerHTML = ''
+
 
         // Add "Add Semester" button inside course list
         const addSemesterBtn = document.createElement('button')
@@ -379,7 +427,7 @@ select[name='degree']:focus {
             // add to previous semester container one course name container
             const newElement = document.createElement('li')
             // create <li><input>....</></>
-            newElement.innerHTML = `<input name= 'course_name_input' value = '' placeholder = 'course name as in courses'/>`
+            newElement.innerHTML = `<input name= 'semester_${semesterGridElement.children.length - 1}' value = '' placeholder = 'course name as in courses'/>`
             // add listener to input inside <li>
             const lastInputElement = newElement.firstElementChild
             // now add listener event that will add one more element
@@ -408,7 +456,11 @@ select[name='degree']:focus {
                 {
                     const newElement = document.createElement('li')
                     // create <li><input>....</></>
-                    newElement.innerHTML = `<input name= 'course_name_input' value = '' placeholder = 'course name as in courses'/>`
+                    firstCourseInputName = courseListElements.firstElementChild.querySelector('input').name
+                    let semesterNumber = 0
+                    if(!isNaN(firstCourseInputName.slice(-2)))semesterNumber = firstCourseInputName.slice(-2)
+                    else semesterNumber = firstCourseInputName.slice(-1)
+                    newElement.innerHTML = `<input name= semester_${semesterNumber} value = '' placeholder = 'course name as in courses'/>`
                     // add to list of courses
                     courseListElements.appendChild(newElement)
                     // add listener to input inside <li>
@@ -426,10 +478,16 @@ select[name='degree']:focus {
 
             // get list of courses element
             const parentElement = lastInputElement.parentNode.parentNode;
+            // get last semester
+            
             if (lastInputElement.value != '' && parentElement.lastElementChild == lastInputElement.parentNode )
             {
                 const newElement = document.createElement('li')
-                newElement.innerHTML = `<input name= 'course_name_input' value = '' placeholder = 'course name as in courses'/>`
+                const firstCourseInputName = parentElement.firstElementChild.querySelector('input').name
+        
+                const semesterNumber = (!isNaN(firstCourseInputName.slice(-2))) ? firstCourseInputName.slice(-2) : firstCourseInputName.slice(-1)
+
+                newElement.innerHTML = `<input name= semester_${semesterNumber} value = '' placeholder = 'course name as in courses'/>`
                 parentElement.appendChild(newElement)
                 newElement.firstElementChild.addEventListener('input', onInput)
             }
@@ -438,10 +496,6 @@ select[name='degree']:focus {
                 parentElement.lastElementChild.remove()
             }
         }
-        function onChange(event)
-        {
-            lastInputElement = event.target
-            
-        }
+       
     </script>
 {% endblock %}

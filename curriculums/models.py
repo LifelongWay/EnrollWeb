@@ -39,5 +39,7 @@ class Curriculum(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='curriculums')
     numbered_semester = models.PositiveIntegerField()
 
+    class Meta:
+                unique_together = ('program', 'course')
     def __str__(self):
         return f"{self.program.name} - {self.course.name} (Semester {self.numbered_semester})"

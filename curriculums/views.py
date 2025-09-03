@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.db.models import Case, When, IntegerField
+from django.db import IntegrityError
 from departments.models import Department
-from .models import Program
+from courses.models import Course
+from .models import Program, Curriculum
 from .forms import ProgramNameForm
 
 
@@ -50,13 +52,37 @@ def curriculum_edit(request, program_id):
 
 
     if request.method == 'POST':
-        program_form = ProgramNameForm(request.POST)
-        if program_form.is_valid():
-            pass
-        else:
-            print('Program Form Errors')
-            print(program_form.errors)
-        
+        print("=== POST DATA ===")
+        for inputName, inputValue in request.POST.items():
+            # skip unnecessary input, values
+            if(not inputName.startswith('semester_')): continue
+            
+            # parse semester number
+            semester = int(inputName.split('_')[1])
+
+            # get values of all inputs corresponding to semester_{semester}
+            courses = request.POST.getlist(inputName)
+            
+            # check existance of inputed course before saving
+            for course_name in courses:
+                course_instance_query = Course.objects.filter(name = course_name)
+                
+                if course_instance_query.exists():
+                    course_instance = course_instance_query.first()
+                    print(f'\033[92mAdding {course_name} to Semester {semester}\033[0m')
+                   
+                    try:
+                        newCurriculumItem = Curriculum(
+                            program=program_instance,
+                            course=course_instance,
+                            numbered_semester=semester
+                        )
+                        newCurriculumItem.save()
+                        print(f'\033[92mAdded {course_name} to Semester {semester}\033[0m')
+                    except IntegrityError:
+                        # This is extra safety in case of race conditions
+                        print(f'\033[91mIntegrityError: {course_name} not added (duplicate?)\033[0m')
+
         return redirect('curriculums:editor')
     else:
         context['program_form'] = ProgramNameForm(instance = program_instance)
