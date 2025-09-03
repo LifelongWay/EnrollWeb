@@ -50,7 +50,11 @@ def curriculum_edit(request, program_id):
     editing_department_id = program_instance.department.pk
     context['departments'] = makefirst(context['departments'], editing_department_id)
 
-
+    # get list of old course names in this program (to find deleted)
+    old_course_names = [course.name for course in program_instance.courses.all()]
+    # sooner existing (inputed_names) will be removed from here, so deleted will remain unremoved
+    deleted_course_names = old_course_names
+    added_course_names = []
     if request.method == 'POST':
         print("=== POST DATA ===")
         for inputName, inputValue in request.POST.items():
@@ -61,16 +65,21 @@ def curriculum_edit(request, program_id):
             semester = int(inputName.split('_')[1])
 
             # get values of all inputs corresponding to semester_{semester}
-            courses = request.POST.getlist(inputName)
+            input_courses = request.POST.getlist(inputName)
+
             
+
             # check existance of inputed course before saving
-            for course_name in courses:
+            for course_name in input_courses:
+                # delete from removed inputed course name
+                
+                if course_name in deleted_course_names: deleted_course_names.remove(course_name)
                 course_instance_query = Course.objects.filter(name = course_name)
                 
                 if course_instance_query.exists():
                     course_instance = course_instance_query.first()
-                    print(f'\033[92mAdding {course_name} to Semester {semester}\033[0m')
-                   
+                    #print(f'\033[92mAdding {course_name} to Semester {semester}\033[0m')
+
                     try:
                         newCurriculumItem = Curriculum(
                             program=program_instance,
@@ -78,11 +87,22 @@ def curriculum_edit(request, program_id):
                             numbered_semester=semester
                         )
                         newCurriculumItem.save()
-                        print(f'\033[92mAdded {course_name} to Semester {semester}\033[0m')
+                        
+                        # add to added list
+                        added_course_names.append(course_name)
                     except IntegrityError:
                         # This is extra safety in case of race conditions
-                        print(f'\033[91mIntegrityError: {course_name} not added (duplicate?)\033[0m')
+                        # print(f'\033[91mIntegrityError: {course_name} not added (duplicate?)\033[0m')
+                        pass
+        # delete from table Curriculum deleted_course_names
+        for deleted_course_name in deleted_course_names:
+            Curriculum.objects.get(
+                program=program_instance,
+                course= program_instance.courses.get(name = deleted_course_name),
+            ).delete()
 
+        print('Deleted Course Names: ', deleted_course_names)
+        print('Added Course Names: ', added_course_names)
         return redirect('curriculums:editor')
     else:
         context['program_form'] = ProgramNameForm(instance = program_instance)

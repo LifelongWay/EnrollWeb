@@ -377,6 +377,118 @@ select[name='degree']:focus {
         {
             const parent_element = program_under_edit.parentNode
             parent_element.insertBefore(program_under_edit, parent_element.children[1])
+
+            // adding empty addable semester block for program under edit
+            const semesterGridElement = program_under_edit.querySelector('.semester-grid')
+            const semesterBlockElement = semesterGridElement.lastElementChild
+            const newSemesterBlockElement = document.createElement('div');
+            
+            let lastSemester = semesterGridElement.children.length
+            newSemesterBlockElement.innerHTML = 
+            `
+                <div class="semester-block">
+                    <div class="semester-header">Semester ${lastSemester + 1}</div>
+                    <ul class="semester-course-list">
+
+                    </ul>
+                </div>
+            `
+
+
+
+            // Add "Add Semester" button inside course list
+            const addSemesterBtn = document.createElement('button')
+            addSemesterBtn.textContent = '➕ Add Semester'
+            addSemesterBtn.className = 'semester-header'
+            addSemesterBtn.type = 'button'
+
+            newSemesterBlockElement.appendChild(addSemesterBtn)
+            semesterGridElement.appendChild(newSemesterBlockElement)
+
+            addSemesterBtn.addEventListener('click', () => { newSemesterCreation() });
+
+            function newSemesterCreation()
+            {
+                const lastSemesterContainer = semesterGridElement.lastElementChild
+                const buttonWithListener = lastSemesterContainer.lastElementChild 
+
+                const newSemesterContainer = lastSemesterContainer.cloneNode(true)
+                newSemesterContainer.querySelector('.semester-header').innerHTML = `Semester ${semesterGridElement.children.length + 1}`
+                buttonWithListener.remove()
+                semesterGridElement.appendChild(newSemesterContainer)
+                newSemesterContainer.querySelector('button').addEventListener('click', () => newSemesterCreation() )
+            
+                // add to previous semester container one course name container
+                const newElement = document.createElement('li')
+                // create <li><input>....</></>
+                newElement.innerHTML = `<input name= 'semester_${semesterGridElement.children.length - 1}' value = '' placeholder = 'course name as in courses'/>`
+                // add listener to input inside <li>
+                const lastInputElement = newElement.firstElementChild
+                // now add listener event that will add one more element
+                lastInputElement.addEventListener('input', onInput)
+                // append this element to oldLastSemesterContainer
+                lastSemesterContainer.querySelector('ul').appendChild(newElement)
+            
+                
+            }
+
+
+            // Turning courses into input elements with initial values
+
+            // get list of lists courses of ith semester
+            const semesterBlockElements =  semesterGridElement.querySelectorAll('.semester-block')
+
+        
+            // ith semester block has courses of ith semester
+            semesterBlockElements.forEach(
+                (semesterBlockElement, index) => 
+                {
+                    console.log(semesterBlockElement)
+                    // getting list of li-elements of course_name in semesterBlockElement
+                    courseListElements = semesterBlockElement.querySelector('.semester-course-list')
+                    if (courseListElements && index != semesterGridElement.children.length-1)
+                    {
+                        const newElement = document.createElement('li')
+                        // create <li><input>....</></>
+                        semesterNumber = parseInt(semesterBlockElement.querySelector('.semester-header').innerHTML.split(' ')[1], 10)
+                        
+                        
+                        newElement.innerHTML = `<input name= semester_${semesterNumber} value = '' placeholder = 'course name as in courses'/>`
+                        // add to list of courses
+                        courseListElements.appendChild(newElement)
+                        // add listener to input inside <li>
+                        lastInputElement = newElement.firstElementChild
+                        // now add listener event that will add one more element
+                        lastInputElement.addEventListener('input', onInput)
+                    }
+                    
+                }
+            )
+
+            function onInput(event)
+            {
+                lastInputElement = event.target
+
+                // get list of courses element
+                const parentElement = lastInputElement.parentNode.parentNode;
+                // get last semester
+                
+                if (lastInputElement.value != '' && parentElement.lastElementChild == lastInputElement.parentNode )
+                {
+                    const newElement = document.createElement('li')
+                    const firstCourseInputName = parentElement.firstElementChild.querySelector('input').name
+            
+                    const semesterNumber = (!isNaN(firstCourseInputName.slice(-2))) ? firstCourseInputName.slice(-2) : firstCourseInputName.slice(-1)
+
+                    newElement.innerHTML = `<input name= semester_${semesterNumber} value = '' placeholder = 'course name as in courses'/>`
+                    parentElement.appendChild(newElement)
+                    newElement.firstElementChild.addEventListener('input', onInput)
+                }
+                else if(lastInputElement.value == '' && parentElement.lastElementChild != lastInputElement.parentNode)
+                {
+                    parentElement.lastElementChild.remove()
+                }
+            }
         }
         else
         {
@@ -384,118 +496,7 @@ select[name='degree']:focus {
         }
 
 
-        // adding empty addable semester block for program under edit
-        const semesterGridElement = program_under_edit.querySelector('.semester-grid')
-        const semesterBlockElement = semesterGridElement.lastElementChild
-        const newSemesterBlockElement = document.createElement('div');
         
-        let lastSemester = semesterGridElement.children.length
-        newSemesterBlockElement.innerHTML = 
-        `
-            <div class="semester-block">
-                <div class="semester-header">Semester ${lastSemester + 1}</div>
-                <ul class="semester-course-list">
-
-                </ul>
-            </div>
-        `
-
-
-
-        // Add "Add Semester" button inside course list
-        const addSemesterBtn = document.createElement('button')
-        addSemesterBtn.textContent = '➕ Add Semester'
-        addSemesterBtn.className = 'semester-header'
-        addSemesterBtn.type = 'button'
-
-        newSemesterBlockElement.appendChild(addSemesterBtn)
-        semesterGridElement.appendChild(newSemesterBlockElement)
-
-        addSemesterBtn.addEventListener('click', () => { newSemesterCreation() });
-
-        function newSemesterCreation()
-        {
-            const lastSemesterContainer = semesterGridElement.lastElementChild
-            const buttonWithListener = lastSemesterContainer.lastElementChild 
-
-            const newSemesterContainer = lastSemesterContainer.cloneNode(true)
-            newSemesterContainer.querySelector('.semester-header').innerHTML = `Semester ${semesterGridElement.children.length + 1}`
-            buttonWithListener.remove()
-            semesterGridElement.appendChild(newSemesterContainer)
-            newSemesterContainer.querySelector('button').addEventListener('click', () => newSemesterCreation() )
-        
-            // add to previous semester container one course name container
-            const newElement = document.createElement('li')
-            // create <li><input>....</></>
-            newElement.innerHTML = `<input name= 'semester_${semesterGridElement.children.length - 1}' value = '' placeholder = 'course name as in courses'/>`
-            // add listener to input inside <li>
-            const lastInputElement = newElement.firstElementChild
-            // now add listener event that will add one more element
-            lastInputElement.addEventListener('input', onInput)
-            // append this element to oldLastSemesterContainer
-            lastSemesterContainer.querySelector('ul').appendChild(newElement)
-        
-            
-        }
-
-
-        // Turning courses into input elements with initial values
-
-        // get list of lists courses of ith semester
-        const semesterBlockElements =  semesterGridElement.querySelectorAll('.semester-block')
-
-    
-        // ith semester block has courses of ith semester
-        semesterBlockElements.forEach(
-            (semesterBlockElement, index) => 
-            {
-                console.log(semesterBlockElement)
-                // getting list of li-elements of course_name in semesterBlockElement
-                courseListElements = semesterBlockElement.querySelector('.semester-course-list')
-                if (courseListElements && courseListElements.children.length != 0)
-                {
-                    const newElement = document.createElement('li')
-                    // create <li><input>....</></>
-                    firstCourseInputName = courseListElements.firstElementChild.querySelector('input').name
-                    let semesterNumber = 0
-                    if(!isNaN(firstCourseInputName.slice(-2)))semesterNumber = firstCourseInputName.slice(-2)
-                    else semesterNumber = firstCourseInputName.slice(-1)
-                    newElement.innerHTML = `<input name= semester_${semesterNumber} value = '' placeholder = 'course name as in courses'/>`
-                    // add to list of courses
-                    courseListElements.appendChild(newElement)
-                    // add listener to input inside <li>
-                    lastInputElement = newElement.firstElementChild
-                    // now add listener event that will add one more element
-                    lastInputElement.addEventListener('input', onInput)
-                }
-                
-            }
-        )
-
-        function onInput(event)
-        {
-            lastInputElement = event.target
-
-            // get list of courses element
-            const parentElement = lastInputElement.parentNode.parentNode;
-            // get last semester
-            
-            if (lastInputElement.value != '' && parentElement.lastElementChild == lastInputElement.parentNode )
-            {
-                const newElement = document.createElement('li')
-                const firstCourseInputName = parentElement.firstElementChild.querySelector('input').name
-        
-                const semesterNumber = (!isNaN(firstCourseInputName.slice(-2))) ? firstCourseInputName.slice(-2) : firstCourseInputName.slice(-1)
-
-                newElement.innerHTML = `<input name= semester_${semesterNumber} value = '' placeholder = 'course name as in courses'/>`
-                parentElement.appendChild(newElement)
-                newElement.firstElementChild.addEventListener('input', onInput)
-            }
-            else if(lastInputElement.value == '' && parentElement.lastElementChild != lastInputElement.parentNode)
-            {
-                parentElement.lastElementChild.remove()
-            }
-        }
        
     </script>
 {% endblock %}
