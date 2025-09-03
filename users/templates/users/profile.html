@@ -70,15 +70,27 @@
             
             {% comment %} Profile Details {% endcomment %}
             <p><strong>Username:</strong> {{ user_viewed }}</p>
-            <p><strong>Name:</strong> {{ form.name }}</p>
-            <p><strong>Surname:</strong> {{ form.surname }}</p>
+
+            {% if user|has_group:'Registrar' %}
+                <p><strong>Name:</strong> {{ form.name }}</p>
+                <p><strong>Surname:</strong> {{ form.surname }}</p>
+            {% endif %}
+
             <p><strong>Email:</strong> {{ form.email }} </p>
 
             {% if user_viewed|has_group:"Student" %}
-                <p><strong>Department:</strong> {{ form.department }}</p>
                 <p><strong>GPA:</strong> {{ user_viewed.student.gpa }}</p>
                 {% if user_viewed.student.advisor %}
                     <p><strong>Advisor:</strong> {{ user_viewed.student.advisor }}</p>
+                {% endif %}
+
+                {% if user_viewed.student.program and user|has_group:'Registrar' %}
+                    <p><strong>Program:</strong>
+                    <select name = 'program'>
+                        {% for program in programs %}
+                            <option value = '{{program.name}}' {% if user_viewed.student.program.name == program.name %}selected{% endif %}>{{program}}</option>
+                        {% endfor %}
+                    </select>
                 {% endif %}
             {% elif user_viewed|has_group:"Teacher" %}
                 <p><strong>Department:</strong> {{ form.department }}</p>
@@ -135,6 +147,7 @@
 
             {% if user_viewed|has_group:"Student" %}
                 <p><strong>Department:</strong> {{ user_viewed.student.department.name }}</p>
+                <p><strong>Program:</strong> {{user_viewed.student.program.name}}</p>
                 <p><strong>GPA:</strong> {{ user_viewed.student.gpa }}</p>
                 {% if user_viewed.student.advisor %}
                     <p><strong>Advisor:</strong> {{ user_viewed.student.advisor }}</p>

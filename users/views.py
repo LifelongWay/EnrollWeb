@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import logout, login, authenticate
 from .models import Student, Teacher
+from curriculums.models import Program
 
 # Create your views here.
 def login_view(request):  # Renamed from 'login'
@@ -104,12 +105,28 @@ def profile_edit_view(request, user_id):
     context['form'] = form
 
     if request.method == 'POST':
+        # check for program change
+        if hasattr(user_under_edit, 'student'):
+            if(request.POST.get('program')):
+                print('Program: ', request.POST.get('program'))
+                updated_program = Program.objects.get(name = request.POST.get('program'))
+                user_under_edit.student.program = updated_program
+                user_under_edit.student.save()
+                print('Saved Program!')
+                
+        # other attrib-s.
         form = EnrollSysRegistrationForm(request.POST, request.FILES ,user=user_under_edit)
         context['form'] = form
 
         if form.is_valid():
             form.save(user=user_under_edit)
+            
             return redirect('users:profile', user_id=user_id)
         else:
             print(form.errors)
+
+    # if editing student, pass programs of department
+    if hasattr(user_under_edit, 'student'):
+        context['programs'] = Program.objects.filter(department = user_under_edit.student.department)
+    
     return render(request, 'users/profile.html', context)
