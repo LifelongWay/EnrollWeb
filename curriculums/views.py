@@ -12,6 +12,13 @@ from .forms import ProgramNameForm
 def curriculums_editor(request):
     context = {}
     context['departments'] = Department.objects.all()
+    context['all_departments'] = Department.objects.all()
+    if request.method == 'GET':
+        if request.GET.get('department'): 
+            context['selected_department'] = int(request.GET.get('department'))
+            print('Selected: ', context['selected_department'])
+            context['departments'] = Department.objects.filter(pk = request.GET.get('department'))
+        
 
     return render(request, 'curriculums/curriculum_editor.html', context)
 
@@ -37,6 +44,10 @@ def program_add(request, dept_id):
         context['program_form'] = ProgramNameForm()
         context['editing_department_id'] = dept_id
 
+        if request.GET.get('department'): 
+            context['department'] = Department.objects.filter(name = request.GET.get('department'))
+        else:
+            print("NOTHING!")
     
     return render(request, 'curriculums/curriculum_editor.html', context)
 
@@ -128,8 +139,14 @@ def program_edit(request, program_id):
 
         return redirect('curriculums:editor')
     else:
+        # GET request: href, form get
         context['program_form'] = ProgramNameForm(instance = program_instance)
         
+        if request.GET.get('department'): 
+            context['department'] = Department.objects.filter(name = request.GET.get('department'))
+        else:
+            print("NOTHING!")
+
 
     return render(request, 'curriculums/curriculum_editor.html', context)
 
@@ -138,7 +155,6 @@ def program_delete(request, program_id):
 
 def my_program(request):
     pass
-
 
 
 def makefirst(object_list, pk):

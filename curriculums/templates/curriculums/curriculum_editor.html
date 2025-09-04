@@ -265,6 +265,17 @@ select[name='degree']:focus {
 
         <div class="dashboard-header">
             <h2>Departments Dashboard</h2>
+            <form method="get" class="d-flex ms-auto align-items-center gap-2">
+                <label for="department" class="mb-0">Department:</label>
+                <select name="department" id="department" class="custom-select" onchange="this.form.submit()">
+                    <option value="">All</option>
+                    {% for dept in all_departments %}
+                        <option value="{{ dept.dept_id }}" {% if dept.dept_id == selected_department %}selected{% endif %}>
+                            {{ dept.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
         </div>
 
         <div class="department-grid">

@@ -10,9 +10,9 @@ def semesters_in_program(program):
     """
     semesters = Curriculum.objects.filter(program=program).values_list('numbered_semester', flat=True).distinct()
     if not semesters:
-        return []
+        return [1]
 
-    min_sem = min(semesters)
+    min_sem = 1
     max_sem = max(semesters)
 
     return list(range(min_sem, max_sem + 1))
