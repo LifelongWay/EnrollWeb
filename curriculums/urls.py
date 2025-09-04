@@ -8,5 +8,5 @@ urlpatterns = [
     path('programs/', views.curriculums_editor, name = 'editor'),
     path('programs/add/<int:dept_id>/', views.program_add, name = 'program-add'),
     path('programs/edit/<int:program_id>/', views.program_edit, name = 'program-edit'),
-    path('programs/edit/<int:program_id>/', views.program_delete, name = 'program-delete'),
+    path('programs/delete/<int:program_id>/', views.program_delete, name = 'program-delete'),
 ]

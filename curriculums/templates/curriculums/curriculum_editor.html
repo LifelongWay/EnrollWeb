@@ -7,6 +7,27 @@ Departments Dashboard
 {% endblock %}
 {% block extra_css %}
 <style>
+    /* DELETE BUTTON */
+.btn-delete {
+    background: linear-gradient(135deg, #e74c3c, #c0392b); /* red gradient for danger */
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.5);
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn-delete:hover {
+    background: linear-gradient(135deg, #c0392b, #992d22);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+}
+
+
     .course-credits-badge {
     display: inline-block;
     font-size: 0.95em;             /* slightly bigger for visibility */
@@ -85,7 +106,8 @@ body {
     gap: 10px;
 }
 .action-buttons a {
-    display: inline-block;
+    display: flex;
+    align-items:center;
     padding: 6px 14px;
     border-radius: 6px;
     font-size: 0.85rem;
@@ -312,6 +334,7 @@ select[name='degree']:focus {
                                         <div> {{ program_form.degree }} </div>
                                         <div class="action-buttons">
                                             <a href="{% url 'curriculums:program-edit' program_id=program.pk %}" class="btn-edit">✏️ Edit Program</a>
+                                            <button class="btn-delete" type = "button" onclick = "if(confirm('Are you sure you want to delete this program ?'))document.getElementById('delete-program-{{program.pk}}').submit()">Delete</button>
                                         </div>
                                     </div>
 
@@ -336,6 +359,12 @@ select[name='degree']:focus {
 
                                     <button type="submit" class="btn-submit"> Save </button>
                                 </form>
+                                
+                                <!-- Hidden delete form -->
+                                <form id="delete-program-{{program.pk}}" method="post" action="{% url 'curriculums:program-delete' program_id=program.pk %}" style="display:none;">
+                                    {% csrf_token %}
+                                </form>
+
                             {% else %} 
                             {% comment %} Other Programs {% endcomment %}
                                 <div class="program-card">

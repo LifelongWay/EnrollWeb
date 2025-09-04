@@ -37,7 +37,7 @@ def program_add(request, dept_id):
             program_instance.save()
         else:
             print('Program Form Errors')
-            print(program_form.errors)
+            print(program_form.error1s)
         
         return redirect('curriculums:editor')
     else:
@@ -151,7 +151,9 @@ def program_edit(request, program_id):
     return render(request, 'curriculums/curriculum_editor.html', context)
 
 def program_delete(request, program_id):
-    pass
+    program_to_delete = Program.objects.get(pk = program_id)
+    program_to_delete.delete()
+    return redirect('curriculums:editor')
 
 def my_program(request):
     pass
